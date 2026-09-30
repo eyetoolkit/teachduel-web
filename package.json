@@ -1,0 +1,22 @@
+{
+  "name": "teachduel-web",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "TeachDuel — 统一教师端控制台（BoardDuel / NumeriDuel / MemoryDuel 三站统一入口）",
+  "packageManager": "pnpm@10.11.1",
+  "engines": {
+    "node": ">=20.0.0 <23",
+    "pnpm": ">=10.0.0"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build && node scripts/copy-legacy.mjs && node scripts/filter-sitemap.mjs",
+    "build:beta": "VITE_SHOW_BETA=1 tsc --noEmit && VITE_SHOW_BETA=1 vite build && VITE_SHOW_BETA=1 node scripts/copy-legacy.mjs && VITE_SHOW_BETA=1 node scripts/filter-sitemap.mjs",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.3",
+    "vite": "^5.4.10"
+  }
+}

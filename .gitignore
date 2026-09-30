@@ -1,0 +1,28 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Build output
+dist/
+*.log
+
+# Node
+node_modules/
+.pnpm-store/
+
+# Env
+.env
+.env.local
+.env.*.local
+
+# Worker
+.wrangler/
+.dev.vars
+
+# Vite timestamp files (boardduel had this issue)
+vite.config.ts.timestamp-*.mjs
+
+# tsbuildinfo
+*.tsbuildinfo

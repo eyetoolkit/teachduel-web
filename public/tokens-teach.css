@@ -1,0 +1,44 @@
+/* ============ 品牌阶梯 · TeachDuel Teal ============
+   主色 #0F766E（teal-700，色相 175°）
+   色相距离：vs boardduel Violet 262° = 87°
+             vs numeriduel Indigo 243° = 68°
+             vs memoryduel Orange  21° = 154°
+   → 最小 68°，四站一眼可区分
+
+   ⚠️ 注意：--brand 指向 700 而不是 600。
+      teal-600 #0D9488 的白字对比度只有 3.7:1，不达 WCAG AA；
+      teal-700 #0F766E 是 5.5:1。这是 Teal 色系明度特性决定的，不是笔误。
+*/
+
+html[data-site="teach"] {
+  --brand-50:  #F0FDFA;    /* 极浅底 */
+  --brand-100: #CCFBF1;    /* hover 底 */
+  --brand-200: #99F6E4;
+  --brand-400: #2DD4BF;
+  --brand-500: #14B8A6;
+  --brand-600: #0D9488;
+  --brand-700: #0F766E;    /* 主色 —— Teal（白字 5.5:1） */
+  --brand-800: #115E59;    /* hover（白字 7.6:1） */
+  --brand-900: #134E4A;    /* active */
+  --brand:        var(--brand-700);
+  --brand-hover:  var(--brand-800);
+  --brand-active: var(--brand-900);
+  --brand-subtle: var(--brand-50);
+  --brand-ring:   rgba(15, 118, 110, 0.35);
+  --brand-text:   #115E59;
+  --hero-g:       linear-gradient(135deg, #115E59 0%, #0F766E 100%);
+}
+
+/* ============ teachduel 教师端 UI 变体 ============
+   比游戏端更克制：降圆角、缩按钮、去装饰、减动效、标题换 Inter。
+   只需覆盖变量，组件层一行不改。
+*/
+
+html[data-site="teach"] {
+  --radius-card:    8px;     /* 游戏端 12px —— 从圆润向锐利过渡 */
+  --btn-h:          44px;    /* 游戏端 48px —— 教师端桌面/投影为主 */
+  --dur:            150ms;   /* 游戏端更丰富，教师端只用于引导注意力 */
+  --font-display:   "Inter", system-ui, sans-serif;  /* 游戏端 Space Grotesk */
+  --hero-grid:      none;    /* 去掉装饰性网格 */
+  --hero-glow:      0.5;     /* 光晕强度下调 */
+}
