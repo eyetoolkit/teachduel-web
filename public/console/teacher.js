@@ -553,8 +553,8 @@ function emptyState() {
 
 /* ─── tabs ─── */
 function switchTab(v) {
-  const map = { over: 'viewOver', assign: 'viewAssign', board: 'viewBoard', privacy: 'viewPrivacy' };
-  ['over', 'assign', 'board', 'privacy'].forEach((k) => {
+  const map = { over: 'viewOver', assign: 'viewAssign', board: 'viewBoard', privacy: 'viewPrivacy', banks: 'viewBanks' };
+  ['over', 'assign', 'board', 'privacy', 'banks'].forEach((k) => {
     const on = k === v;
     $('tab' + k.charAt(0).toUpperCase() + k.slice(1)).classList.toggle('on', on);
     $(map[k]).style.display = on ? '' : 'none';
@@ -876,3 +876,204 @@ if (v === 'assign' || v === 'board' || v === 'privacy') switchTab(v);
 setAuthMode(authMode);   // 初始即按当前语言渲染 auth 文案（authHint/authSend 由 JS 管理，不加 data-i18n）
 waitTurnstile();
 (async () => { await ensureAuth().then((authed) => { if (!authed) showAuth(); else boot(); }); })();
+
+
+/* ════════════ M4 Banks · 2026-10-01 ════════════
+   CSV 上传 / 分享码生成 / QR 渲染 / 输码 fork */
+let banks = [];
+let qrScriptLoaded = false;
+
+function loadQRCodeLib() {
+  return new Promise((resolve, reject) => {
+    if (window.QRCode) return resolve();
+    if (qrScriptLoaded) {
+      // wait for load
+      const iv = setInterval(() => {
+        if (window.QRCode) { clearInterval(iv); resolve(); }
+      }, 50);
+      return;
+    }
+    qrScriptLoaded = true;
+    const s = document.createElement('script');
+    s.src = 'https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js';
+    s.onload = () => resolve();
+    s.onerror = () => reject(new Error('qrcode_lib_load_failed'));
+    document.head.appendChild(s);
+  });
+}
+
+async function loadBanks() {
+  try {
+    const d = await api('/teacher/bank');
+    banks = d.banks || [];
+    renderBankList();
+  } catch (e) { toast('⚠ ' + e.message); }
+}
+
+function renderBankList() {
+  const grid = $('bankList');
+  if (!grid) return;
+  if (!banks.length) {
+    grid.innerHTML = '<p class="mini" style="color:var(--mute)">No banks yet. Click "+ Upload CSV" to start.</p>';
+    return;
+  }
+  grid.innerHTML = banks.map(b => `
+    <div class="card bank-card" data-id="${b.id}" style="border:1px solid var(--line);border-radius:10px;padding:14px;margin-bottom:10px">
+      <div style="display:flex;justify-content:space-between;align-items:start;gap:12px">
+        <div style="flex:1">
+          <h4 style="margin:0 0 4px;font-size:.98rem">${esc(b.name)}</h4>
+          <div class="mini" style="color:var(--mute)">${b.gameType || 'quiz'} · ${b.count} questions · ${fmtRel(b.updatedAt)}</div>
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap">
+          <button class="btn btn-ghost btn-sm" data-act="preview" data-id="${b.id}">Preview</button>
+          <button class="btn btn-primary btn-sm" data-act="share" data-id="${b.id}">Share</button>
+          <button class="btn btn-ghost btn-sm" data-act="delete" data-id="${b.id}" style="color:var(--danger)">Delete</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+$('tabBanks')?.addEventListener('click', () => { switchTab('banks'); loadBanks(); });
+
+$('bankList')?.addEventListener('click', async (e) => {
+  const btn = e.target.closest('button[data-act]');
+  if (!btn) return;
+  const id = btn.dataset.id;
+  if (btn.dataset.act === 'preview') return previewBank(id);
+  if (btn.dataset.act === 'share') return shareBank(id);
+  if (btn.dataset.act === 'delete') return deleteBank(id);
+});
+
+async function previewBank(bid) {
+  try {
+    const d = await api('/teacher/bank/' + bid);
+    const b = d.bank;
+    const qs = d.questions || [];
+    const html = `
+      <div class="modal" id="previewModal" style="position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.5);z-index:999;display:flex;align-items:center;justify-content:center;padding:20px">
+        <div class="card" style="max-width:720px;width:100%;max-height:85vh;overflow:auto;background:var(--card);border-radius:14px;padding:20px">
+          <h3 style="margin:0 0 12px">${esc(b.name)} · ${b.count} questions</h3>
+          <ol style="padding-left:20px;margin:0 0 12px">
+            ${qs.map((q, i) => {
+              const cs = q.payload?.choices || [];
+              const correctIdx = (q.payload?.correct || [])[0];
+              return `<li style="margin:8px 0;line-height:1.55">
+                <div><b>${esc(q.prompt)}</b></div>
+                <div class="mini" style="margin:4px 0;color:var(--mute)">
+                  ${cs.map((c, j) => `<span style="${j === correctIdx ? 'color:var(--good);font-weight:600' : ''}">${j+1}. ${esc(c)}${j === correctIdx ? ' ✓' : ''}</span>`).join(' &nbsp; ')}
+                </div>
+              </li>`;
+            }).join('')}
+          </ol>
+          <button class="btn btn-ghost" id="previewClose">Close</button>
+        </div>
+      </div>`;
+    document.body.insertAdjacentHTML('beforeend', html);
+    document.getElementById('previewClose').onclick = () => document.getElementById('previewModal').remove();
+  } catch (e) { toast('⚠ ' + e.message); }
+}
+
+async function shareBank(bid) {
+  try {
+    const d = await api('/teacher/bank/' + bid + '/share', { method: 'POST' });
+    if (d.error) throw new Error(d.error);
+    showShareModal(d.code, d.shareUrl);
+  } catch (e) { toast('⚠ ' + e.message); }
+}
+
+async function showShareModal(code, shareUrl) {
+  await loadQRCodeLib();
+  const html = `
+    <div class="modal" id="shareModal" style="position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.5);z-index:999;display:flex;align-items:center;justify-content:center;padding:20px">
+      <div class="card" style="max-width:480px;width:100%;background:var(--card);border-radius:14px;padding:24px;text-align:center">
+        <h3 style="margin:0 0 12px">Share this bank</h3>
+        <div id="qr" style="display:flex;justify-content:center;margin:12px 0"></div>
+        <div style="font-family:ui-monospace,monospace;font-size:1.4rem;letter-spacing:3px;margin:12px 0;color:var(--brand2)">${code.match(/.{1,3}/g).join(' ')}</div>
+        <input id="shareUrl" readonly value="${shareUrl}" style="width:100%;padding:8px;font-size:.85rem;background:#0a171b;border:1px solid var(--line);border-radius:6px;color:var(--text);margin-bottom:12px">
+        <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+          <button class="btn btn-primary" id="copyBtn">Copy link</button>
+          <button class="btn btn-ghost" id="dlQrBtn">Download QR</button>
+          <button class="btn btn-ghost" id="shareCloseBtn">Close</button>
+        </div>
+      </div>
+    </div>`;
+  document.body.insertAdjacentHTML('beforeend', html);
+  // Render QR
+  const qrEl = document.getElementById('qr');
+  try {
+    await window.QRCode.toCanvas(qrEl, shareUrl, { width: 200, margin: 1, color: { dark: '#000', light: '#fff' } });
+  } catch (e) {
+    qrEl.innerHTML = '<p class="mini">QR rendering failed (offline?)</p>';
+  }
+  document.getElementById('copyBtn').onclick = async () => {
+    try { await navigator.clipboard.writeText(shareUrl); toast('🔗 Copied!'); }
+    catch { toast('Copy manually: ' + shareUrl); }
+  };
+  document.getElementById('dlQrBtn').onclick = () => {
+    const canvas = qrEl.querySelector('canvas');
+    if (canvas) {
+      const url = canvas.toDataURL('image/png');
+      const a = document.createElement('a');
+      a.href = url; a.download = 'bank-' + code + '.png';
+      a.click();
+    }
+  };
+  document.getElementById('shareCloseBtn').onclick = () => document.getElementById('shareModal').remove();
+}
+
+async function deleteBank(bid) {
+  if (!confirm('Delete this bank? This cannot be undone.')) return;
+  // v3 only: client-side filter (server endpoint not yet added)
+  banks = banks.filter(b => b.id !== bid);
+  renderBankList();
+  toast('Bank removed from list (server delete endpoint in next release)');
+}
+
+$('uploadCsvBtn')?.addEventListener('click', () => openCSVUpload());
+$('importCodeBtn')?.addEventListener('click', () => openImportCode());
+
+async function openCSVUpload() {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = '.csv,text/csv';
+  input.onchange = async () => {
+    const file = input.files[0];
+    if (!file) return;
+    const name = prompt('Bank name? (max 80 chars)', file.name.replace(/\.csv$/i, '').slice(0, 80));
+    if (!name) return;
+    const fd = new FormData();
+    fd.append('file', file);
+    fd.append('name', name);
+    try {
+      toast('Uploading CSV...');
+      const res = await fetch('/api/teacher/bank/import', {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: { 'X-Anon-Teacher': anonId() },
+        body: fd,
+      });
+      const data = await res.json();
+      if (!res.ok || data.error) throw new Error(data.error || 'HTTP ' + res.status);
+      toast(`✅ Imported ${data.bank.count} questions (${data.format})`);
+      await loadBanks();
+    } catch (e) { toast('⚠ ' + e.message); }
+  };
+  input.click();
+}
+
+async function openImportCode() {
+  const code = (prompt('Enter 6-character share code:') || '').trim().toUpperCase();
+  if (!code) return;
+  try {
+    const info = await fetch(`/api/teacher/share/${code}`, {
+      headers: { 'X-Anon-Teacher': anonId() },
+    }).then(r => r.json());
+    if (info.error) throw new Error(info.error);
+    if (!confirm(`Fork "${info.bank.name}" (${info.bank.count} questions) into your library?\n\nForked by: ${info.bank.forkCount} teachers`)) return;
+    const d = await api(`/teacher/share/${code}/fork`, { method: 'POST' });
+    if (d.error) throw new Error(d.error);
+    toast(`✅ Forked "${d.bank.name}"`);
+    await loadBanks();
+  } catch (e) { toast('⚠ ' + e.message); }
+}
