@@ -1,1 +1,1 @@
-/share/:code /share/index.html 200
+/share/* /share/index.html 200s
