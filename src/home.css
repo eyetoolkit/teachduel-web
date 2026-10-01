@@ -342,3 +342,20 @@ html[data-theme="dark"] body.home-v3 .tier i { background: #2C2F52; }
 html[data-theme="dark"] body.home-v3 .wrow .rk { color: var(--brand-bright); }
 html[data-theme="dark"] body.home-v3 .wrow.me { color: var(--brand-bright); }
 
+/* Flow . teacher 5-step workflow (P1, 2026-10-01) */
+.home-v3 .flow { padding: 40px 0 6px; }
+.home-v3 .flow-head { text-align: center; margin-bottom: 26px; }
+.home-v3 .flow-head .panel-title { font-size: 1.5rem; }
+.home-v3 .flow-sub { color: var(--mute); margin: 8px 0 0; font-size: .98rem; }
+.home-v3 .flow-steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; }
+.home-v3 .fstep { background: var(--card); border: 1px solid var(--card-line); border-radius: var(--r-card); padding: 18px 16px; display: flex; flex-direction: column; gap: 14px; transition: transform .16s ease, box-shadow .16s ease; }
+.home-v3 .fstep:hover { transform: translateY(-4px); box-shadow: 0 14px 26px rgba(36, 28, 77, .26); }
+.home-v3 .fnum { width: 36px; height: 36px; border-radius: 50%; background: var(--brand); color: #fff; font-family: var(--disp); font-weight: 700; font-size: 1.05rem; display: grid; place-items: center; }
+.home-v3 .fbody { display: flex; flex-direction: column; gap: 5px; }
+.home-v3 .fbody b { color: #fff; font-size: 1rem; line-height: 1.25; }
+.home-v3 .fbody span { color: var(--mute); font-size: .86rem; line-height: 1.5; }
+.home-v3 .flow-cta { display: flex; justify-content: center; gap: 12px; margin-top: 28px; flex-wrap: wrap; }
+.home-v3 .hero-try { text-align: center; color: var(--mute); font-size: .95rem; margin: 0 0 18px; }
+.home-v3 .hero-try b { color: var(--paper); }
+@media (max-width: 979px) { .home-v3 .flow-steps { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 639px) { .home-v3 .flow-steps { grid-template-columns: repeat(2, 1fr); } }
