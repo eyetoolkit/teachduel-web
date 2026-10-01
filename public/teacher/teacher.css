@@ -125,6 +125,9 @@ tr:last-child td{border-bottom:0}
 .grid2 h3{font-size:.92rem;color:var(--teal);margin:0 0 6px}
 .grid2 ul{font-size:.85rem;line-height:1.6}
 @media (max-width:720px){.grid2{grid-template-columns:1fr}}
+@media (max-width:880px){.shell{grid-template-columns:1fr}.rail{border-right:0;border-bottom:1px solid var(--line);padding-bottom:14px}}
+/* Touch target：所有按钮至少 44px（Apple HIG / WCAG 2.5.5）*/
+@media (max-width:720px){button.copy,button.prim,button.ghost,button.newc,.tab{min-height:44px;font-size:.95rem;padding:10px 14px}}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
 /* auth overlay (minimal — magic link) */
