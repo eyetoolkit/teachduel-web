@@ -658,7 +658,7 @@ $('exportBtn')?.addEventListener('click', async () => {
     URL.revokeObjectURL(url);
     toast('⬇ Export ready');
   } catch (e) {
-    toast('Export endpoint coming soon — your data is still under 180-day auto-delete');
+    toast('Export failed — please retry. Your data is safe under 180-day auto-delete.');
   }
 });
 
@@ -675,7 +675,7 @@ $('deleteBtn')?.addEventListener('click', async () => {
     toast('🗑 Deleted. Logging out…');
     setTimeout(() => location.reload(), 1500);
   } catch (e) {
-    toast('Delete endpoint coming soon — emails privacy@teachduel.com to wipe');
+    toast('Delete failed — please retry, or email privacy@teachduel.com for help.');
   }
 });
 $('rosterSave').addEventListener('click', async () => {
