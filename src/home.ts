@@ -11,7 +11,14 @@
  *
  * 决定：首页房间码输入框作为辅助入口，主要走教师链接路径。
  *       房间码解析需要后端做 lookup（M1 阶段后端还没起，先做幂等 UI）。
+ *
+ * ⭐ 必须 import './home.css'：
+ *    vite 在 src/ 里只编译被 main.ts / index.html 引用的模块。
+ *    home.css 通过 home.ts 的 import 才能被打包到 dist/assets/main-*.css。
+ *    否则 index.html 里的 <link href=/assets/main-*.css> 会指向 stale 文件，
+ *    浏览器拿到的是 404 HTML 样式，整个页面无样式（v3 2026-10-01 实测）。
  */
+import './home.css';
 
 const form = document.getElementById('codeForm') as HTMLFormElement | null;
 const input = document.getElementById('codeInput') as HTMLInputElement | null;
