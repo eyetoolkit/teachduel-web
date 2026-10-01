@@ -15,7 +15,8 @@ async function apiAnon(path, opts = {}) {
   return data;
 }
 
-const code = location.pathname.split('/').filter(Boolean).pop();
+const url = new URL(location.href);
+const code = url.searchParams.get('code') || location.pathname.split('/').filter(Boolean).pop() || '';
 
 async function load() {
   if (!code || !/^[23456789ABCDEFGHJKMNPQRSTUVWXYZ]{4,8}$/.test(code)) {
