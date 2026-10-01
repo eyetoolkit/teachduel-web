@@ -2,6 +2,7 @@
 <html lang="en" data-site="teach">
 <head>
 <script>window.__I18N_CONFIG__={supported:["en","zh","ja","es","fr","de"],dictVersion:1,fallback:"en"};</script>
+<script src="/i18n/i18n.js?v=1"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
 <meta name="theme-color" content="#0f766e">
@@ -11,8 +12,44 @@
 <link rel="canonical" href="https://teachduel.com/how-to-play/">
 <link rel="stylesheet" href="/tokens-teach.css">
 <link rel="stylesheet" href="/subpage.css">
+<link rel="stylesheet" href="/chrome.css">
 </head>
 <body class="home-v3">
+
+<!-- ═══════════ 移动端顶栏 ═══════════ -->
+<div class="topbar">
+  <button class="burger" id="burger" aria-label="Open navigation" aria-expanded="false">
+    <svg viewBox="0 0 24 24" fill="none"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+  </button>
+  <a class="logo" href="/">Teach<b>Duel</b></a>
+  <a class="btn-login" href="/console/">Open console</a>
+</div>
+<div class="overlay" id="overlay"></div>
+
+<!-- ═══════════ 侧边导航（How to play 高亮） ═══════════ -->
+<aside class="sidebar" id="sidebar">
+  <div class="sb-top">
+    <a class="logo" href="/">Teach<b>Duel</b></a>
+    <button class="sb-collapse" id="collapse" title="Collapse navigation" aria-label="Collapse navigation">&laquo;</button>
+  </div>
+  <div class="sb-login">
+    <a class="btn-login" href="/console/"><span>Open console</span></a>
+  </div>
+  <nav class="sb-nav" aria-label="Site navigation">
+    <a class="nav-item" href="/"><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h5v-6h4v6h5V10"/></svg><label style="cursor:inherit" data-i18n="nav.home">Home</label></a>
+    <a class="nav-item" href="/console/"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 4v16M4 9h5M4 14h5"/></svg><label style="cursor:inherit" data-i18n="nav.console">Console</label></a>
+    <a class="nav-item active" href="/how-to-play/"><svg viewBox="0 0 24 24"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19a2 2 0 0 1 2-2h13"/></svg><label style="cursor:inherit" data-i18n="nav.how">How to play</label></a>
+    <div class="nav-group">Site</div>
+    <a class="nav-item" href="/about/"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg><label style="cursor:inherit" data-i18n="nav.about">About</label></a>
+    <a class="nav-item" href="/privacy/"><svg viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4-3 7-7 9-4-2-7-5-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg><label style="cursor:inherit" data-i18n="nav.privacy">Privacy</label></a>
+    <a class="nav-item" href="/contact/"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg><label style="cursor:inherit" data-i18n="nav.contact">Contact</label></a>
+  </nav>
+  <div class="nav-foot">
+    <div id="lang-switcher"></div>
+    <span class="sb-copy">&copy; 2026</span>
+  </div>
+</aside>
+
 <main class="main">
   <section class="wrap">
     <section class="hero">
@@ -88,5 +125,7 @@
     <p class="sf-copy">© 2026 Duel Family · TeachDuel · No student identity data · 180-day retention</p>
   </div>
 </footer>
+<script src="/chrome.js" defer></script>
+<script src="/i18n/lang-switcher.js?v=1" defer></script>
 </body>
 </html>

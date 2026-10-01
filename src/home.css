@@ -56,7 +56,7 @@ body.home-v3 {
 
 /* 站点 chrome 统一移至 chrome.css（侧栏/rail/顶栏） */
 
-.home-v3 .main { margin-left: var(--sb-w); transition: margin .22s ease; }
+.home-v3 .main { transition: margin .22s ease; }
 .home-v3 .wrap { max-width: 1020px; margin: 0 auto; padding: 0 26px; }
 
 /* ═══════════ 游戏墙（首屏，桌面四列 / 平板三列 / 手机两列） ═══════════ */
@@ -244,7 +244,7 @@ body.home-v3 {
 }
 
 /* ═══════════ 页脚 ═══════════ */
-.home-v3 .site-footer { background: var(--card); color: #C9CCF2; margin-top: 30px; padding: 44px 0 30px; margin-left: var(--sb-w); transition: margin .22s ease; }
+.home-v3 .site-footer { background: var(--card); color: #C9CCF2; margin-top: 30px; padding: 44px 0 30px; }
 .home-v3 .sf-title { font-family: var(--disp); font-weight: 700; color: #fff; font-size: 1.02rem; margin-bottom: 16px; letter-spacing: -.01em; }
 .home-v3 .sf-matrix { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 22px; }
 .home-v3 .sf-item {

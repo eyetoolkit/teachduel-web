@@ -36,7 +36,9 @@
     "game_sudoku": "Sudoku",
     "main_navigation": "Navegación principal",
     "stats": "Estadísticas",
-    "register": "Registrarse"
+    "register": "Registrarse",
+    "console": "Consola",
+    "how": "Cómo jugar"
   },
   "sidebar": {
     "group_games": "Juegos",

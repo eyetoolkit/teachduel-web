@@ -1,0 +1,120 @@
+/* ════════════════════════════════════════════════════════════════
+   TeachDuel · 站点 chrome（侧栏 / 顶栏 / 抽屉 / 收起）
+   ────────────────────────────────────────────────────────────────
+   与 boardduel 的 lobby-chrome 同构（侧栏抽屉 / 桌面收起 / 主题按钮位），
+   主色换 Teal，侧栏为白卡（教学站品牌皮肤）。
+
+   ⚠️ 语义修正：teachduel 已统一为 --ink=暗底 / --paper=白字
+   （boardduel 旧约定是 --paper=暗字）。白侧栏内必须用暗色文字，
+   故此处不沿用 boardduel 旧 chrome 的 `color:var(--paper)`，
+   而用明确暗色（#0F172A / #5B6B7F），避免「白底白字」不可见。
+
+   DOM 依赖（各页静态提供）：#burger / #overlay / #collapse / #sidebar
+   ════════════════════════════════════════════════════════════════ */
+
+body.home-v3 { --sb-w: 236px; --sb-rail: 74px; }
+
+/* ── 侧栏（白卡导航） ── */
+body.home-v3 .sidebar {
+  position: fixed; inset: 0 auto 0 0; width: var(--sb-w); z-index: 50;
+  background: #FFFFFF; border-right: 1px solid var(--line);
+  display: flex; flex-direction: column; padding: 18px 14px;
+  transition: width .22s ease, transform .22s ease;
+}
+body.home-v3 .sb-top { display: flex; align-items: center; gap: 10px; padding: 2px 6px 14px; }
+body.home-v3 .logo {
+  font-family: var(--disp); font-weight: 700; font-size: 1.3rem; line-height: 1;
+  white-space: nowrap; letter-spacing: -.01em; color: #0F172A; text-decoration: none;
+}
+body.home-v3 .logo b { color: var(--brand); font-weight: 700; }
+body.home-v3 .sb-collapse {
+  margin-left: auto; flex: none; width: 26px; height: 26px; border-radius: 8px;
+  border: 1px solid var(--line); background: #FFFFFF; color: #5B6B7F;
+  font-size: .8rem; line-height: 1; display: grid; place-items: center; cursor: pointer;
+}
+body.home-v3 .sb-collapse:hover { color: var(--brand); border-color: var(--brand-bright); }
+body.home-v3 .sb-login { display: flex; gap: 8px; padding: 0 2px 14px; border-bottom: 1px solid var(--line); }
+body.home-v3 .btn-login {
+  flex: 1; display: inline-flex; align-items: center; justify-content: center;
+  background: var(--brand); color: #fff; border: 0; border-radius: 11px;
+  font-weight: 700; font-size: .9rem; padding: 9px 0; white-space: nowrap;
+  text-decoration: none; font-family: var(--ui); cursor: pointer;
+}
+body.home-v3 .btn-login:hover { background: var(--brand-hover); }
+body.home-v3 .sb-nav { flex: 1; overflow-y: auto; padding-top: 10px; }
+body.home-v3 .sb-nav::-webkit-scrollbar { width: 0; }
+body.home-v3 .nav-item {
+  display: flex; align-items: center; gap: 11px; padding: 9px 10px; border-radius: 10px;
+  color: #5B6B7F; font-size: .86rem; font-weight: 500; text-decoration: none; white-space: nowrap;
+}
+body.home-v3 .nav-item:hover { background: #F0FDFA; color: #0F172A; }
+body.home-v3 .nav-item.active { background: var(--brand-soft); color: var(--brand-700); font-weight: 700; }
+body.home-v3 .nav-item svg {
+  width: 18px; height: 18px; flex: none; fill: none; stroke: currentColor;
+  stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round;
+}
+body.home-v3 .nav-group {
+  margin: 14px 0 4px; padding: 0 10px; font-size: .66rem; font-weight: 700;
+  letter-spacing: .12em; color: #94A3B8; text-transform: uppercase;
+}
+body.home-v3 .nav-foot {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  padding-top: 12px; border-top: 1px solid var(--line);
+}
+body.home-v3 .sb-copy { font-size: .68rem; color: #94A3B8; white-space: nowrap; }
+
+/* focus 可见性（品牌 teal） */
+body.home-v3 button:focus-visible,
+body.home-v3 a:focus-visible { outline-color: var(--brand); }
+
+/* ── 主容器让位（内容在侧栏右侧区域内居中） ── */
+body.home-v3 .main { margin-left: max(var(--sb-w), (100% + var(--sb-w) - 1120px) / 2); transition: margin .22s ease; }
+body.home-v3 .site-footer { margin-left: max(var(--sb-w), (100% + var(--sb-w) - 1120px) / 2); transition: margin .22s ease; }
+
+/* ── 桌面 rail（收起） ── */
+body.home-v3.rail .sidebar { width: var(--sb-rail); }
+body.home-v3.rail .main,
+body.home-v3.rail .site-footer { margin-left: max(var(--sb-rail), (100% + var(--sb-rail) - 1120px) / 2); }
+body.home-v3.rail .sb-top .logo,
+body.home-v3.rail .btn-login span,
+body.home-v3.rail .nav-item label,
+body.home-v3.rail .nav-group,
+body.home-v3.rail .sb-copy { display: none; }
+body.home-v3.rail .sb-collapse { margin-left: 0; }
+body.home-v3.rail .nav-item { justify-content: center; padding: 10px 0; }
+body.home-v3.rail .btn-login { flex: none; width: 38px; padding: 9px 0; }
+
+/* 顶栏 / 遮罩：桌面隐藏 */
+body.home-v3 .topbar { display: none; }
+body.home-v3 .overlay { display: none; }
+
+/* ── 移动（<1120px）：抽屉式侧栏 + 顶栏 ── */
+@media (max-width: 1119.98px) {
+  body.home-v3 .sidebar {
+    transform: translateX(-100%); width: 264px;
+    box-shadow: 0 0 40px rgba(15, 23, 42, .2);
+  }
+  body.home-v3.nav-open .sidebar { transform: translateX(0); box-shadow: 0 10px 40px rgba(15, 23, 42, .22); }
+  body.home-v3.nav-open .overlay { display: block; position: fixed; inset: 0; background: rgba(15, 23, 42, .4); z-index: 40; }
+  body.home-v3.rail .sidebar { width: 264px; }
+  body.home-v3.rail .sb-top .logo,
+  body.home-v3.rail .btn-login span,
+  body.home-v3.rail .nav-item label,
+  body.home-v3.rail .nav-group,
+  body.home-v3.rail .sb-copy { display: revert; }
+  body.home-v3 .sb-collapse { display: none; }
+  body.home-v3 .topbar {
+    display: flex; align-items: center; gap: 14px; position: sticky; top: 0; z-index: 30;
+    background: rgba(26, 22, 64, .92); backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line); padding: 11px 18px;
+  }
+  body.home-v3 .burger {
+    width: 38px; height: 38px; border: 1px solid var(--line); background: #FFFFFF;
+    border-radius: 10px; display: grid; place-items: center; color: #0F172A; cursor: pointer;
+  }
+  body.home-v3 .burger svg { width: 18px; height: 18px; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
+  body.home-v3 .topbar .logo { font-size: 1.15rem; color: #fff; }
+  body.home-v3 .topbar .logo b { color: var(--brand-bright); }
+  body.home-v3 .topbar .btn-login { margin-left: auto; flex: none; padding: 8px 16px; }
+  body.home-v3 .main, body.home-v3 .site-footer { margin-left: 0; }
+}

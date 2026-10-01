@@ -36,7 +36,9 @@
     "game_sudoku": "数独",
     "main_navigation": "メインナビゲーション",
     "stats": "統計",
-    "register": "登録"
+    "register": "登録",
+    "console": "コンソール",
+    "how": "遊び方"
   },
   "sidebar": {
     "group_games": "ゲーム",

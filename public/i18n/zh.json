@@ -36,7 +36,9 @@
     "game_sudoku": "数独",
     "main_navigation": "主导航",
     "stats": "统计",
-    "register": "注册"
+    "register": "注册",
+    "console": "控制台",
+    "how": "玩法"
   },
   "sidebar": {
     "group_games": "游戏",
