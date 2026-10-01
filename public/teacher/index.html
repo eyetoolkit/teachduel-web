@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title data-i18n="tn.title">TeachDuel · Teacher console</title>
+<meta name="description" content="TeachDuel teacher console: assign practice, track mastery by student code. Zero student identity data — only anonymous records." />
+<meta name="robots" content="noindex" />
+<script>window.__I18N_CONFIG__={supported:["en","zh","ja","es","fr","de"],dictVersion:41,fallback:"en"}</script>
+<script src="/i18n/i18n.js?v=40" defer></script>
+<script src="/i18n/lang-switcher.js?v=39" defer></script>
+<link rel="stylesheet" href="./teacher.css" />
+<link rel="stylesheet" href="/tokens-teach.css" />
+</head>
+<body>
+
+<header class="hd">
+  <div class="logo"><b>Teach</b><i>Duel</i></div>
+  <span class="role"><span class="dot"></span><span data-i18n="tn.role">Teacher</span></span>
+  <span id="lang-switcher"></span>
+  <span class="spacer"></span>
+  <span class="who" id="who"></span>
+  <button class="ghost" id="logoutBtn" data-i18n="tn.logout">Log out</button>
+  <button class="newc" id="newc" data-i18n="tn.new_class">＋ New class</button>
+</header>
+
+<main class="shell">
+  <nav class="rail" aria-label="Classes">
+    <div class="rl" data-i18n="tn.rail_classes">CLASSES</div>
+    <button class="addc" id="addc" data-i18n="tn.add">＋ Add</button>
+  </nav>
+
+  <section class="main">
+    <div class="tabs" role="tablist">
+      <button class="tab on" id="tabOver" role="tab" aria-selected="true" data-i18n="tn.tab_over">Overview</button>
+      <button class="tab" id="tabAssign" role="tab" aria-selected="false" data-i18n="tn.tab_assign">Assign</button>
+      <button class="tab" id="tabBoard" role="tab" aria-selected="false" data-i18n="tn.tab_board">Board</button>
+    </div>
+
+    <!-- OVERVIEW -->
+    <div id="viewOver">
+      <div class="card">
+        <div class="assign-h">
+          <span class="pill" id="aGame">—</span>
+          <span class="pill done">✅ <span class="d" id="aDone">0</span>/<span class="d" id="aTotal">0</span> <span data-i18n="tn.done">done</span></span>
+          <span class="pill pend">⏳ <span class="d" id="aPend">0</span> <span data-i18n="tn.pending">pending</span></span>
+          <span class="pill" id="aDue">📅 no due</span>
+          <span class="pill mode" id="aMode">—</span>
+          <select id="asgSel" class="asgsel" style="display:none" aria-label="Assignment history"></select>
+          <button class="linkbtn" id="delAsgBtn" style="display:none" data-i18n="tn.del_asg">🗑 Delete assignment</button>
+        </div>
+
+        <div class="insights" id="insights" style="display:none"></div>
+        <div class="trend" id="trend" style="display:none"></div>
+
+        <div class="grid2">
+          <div class="blk">
+            <div class="ttl" id="weakTtl">Class weak spot</div>
+            <div id="weak"></div>
+          </div>
+          <div class="blk">
+            <div class="ttl" data-i18n="tn.glance">At-a-glance</div>
+            <div id="glance"></div>
+            <div class="mini" id="glanceNote" style="margin-top:8px"></div>
+          </div>
+        </div>
+
+        <div class="secttl" id="skmTtl" style="display:none"><span data-i18n="tn.skill_map">Skill map</span>
+          <span class="caveat" data-i18n="tn.skill_map_caveat">auto-tagged from 24-Point solutions</span>
+        </div>
+        <div id="skillmap" style="display:none"></div>
+
+        <div class="secttl">
+          <span data-i18n="tn.per_student">Per-student</span>
+          <span class="caveat" data-i18n="tn.per_student_caveat">students use codes, no real names (FERPA-light)</span>
+          <button class="linkbtn" id="rosterBtn" data-i18n="tn.edit_roster">✎ Edit roster codes</button>
+        </div>
+        <div class="roster-box" id="rosterBox" style="display:none">
+          <label for="rosterTA" data-i18n="tn.roster_hint">One code per line (or comma separated). Codes only — never real names.</label>
+          <textarea id="rosterTA" rows="4" placeholder="S01&#10;S02&#10;S03"></textarea>
+          <div class="acts"><button class="prim" id="rosterSave" data-i18n="tn.save_roster">Save roster</button></div>
+        </div>
+        <table>
+          <thead><tr><th data-i18n="tn.th_student">Student</th><th data-i18n="tn.th_done">Done</th><th data-i18n="tn.th_acc">Accuracy</th><th data-i18n="tn.th_avg">Avg time</th><th data-i18n="tn.th_weak">Weak</th></tr></thead>
+          <tbody id="stuBody"></tbody>
+        </table>
+
+        <div class="acts">
+          <button class="prim" id="expBtn" data-i18n="tn.export_csv">📊 Export CSV</button>
+          <button id="boardBtn" data-i18n="tn.open_board">🖥 Open classroom board</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ASSIGN -->
+    <div id="viewAssign" style="display:none">
+      <div class="card">
+        <div class="secttl" style="margin-top:0" data-i18n="tn.assign_h1">Assign practice</div>
+        <div class="form">
+          <div class="fld"><label data-i18n="tn.f_game">GAME</label>
+            <select id="fGame"></select>
+          </div>
+          <div class="fld"><label data-i18n="tn.f_mode">MODE</label>
+            <select id="fMode">
+              <option value="practice" data-i18n="tn.opt_practice">Practice (no rating)</option>
+              <option value="battle" data-i18n="tn.opt_battle">Competition (rated)</option>
+            </select>
+          </div>
+          <div class="fld"><label data-i18n="tn.f_diff">DIFFICULTY</label>
+            <select id="fDiff">
+              <option value="easy" data-i18n="tn.opt_easy">Warm-up</option>
+              <option value="standard" data-i18n="tn.opt_standard">Standard</option>
+              <option value="hard" data-i18n="tn.opt_hard">Tricky</option>
+            </select>
+          </div>
+          <div class="fld"><label data-i18n="tn.f_rounds">ROUNDS</label><input id="fRounds" type="number" value="5" min="1" max="30" /></div>
+          <div class="fld"><label id="fTimeLbl">TIME PER ROUND (s)</label><input id="fTime" type="number" value="60" min="10" max="300" /></div>
+          <div class="fld"><label data-i18n="tn.f_cap">STUDENTS (max)</label><input id="fCap" type="number" value="30" min="2" max="99" /></div>
+          <div class="fld"><label data-i18n="tn.f_due">DUE</label><input id="fDue" type="date" /></div>
+        </div>
+        <div class="room" id="roomBox" style="display:none">
+          <div><div class="code" id="roomCode"></div><div class="url" id="roomUrl"></div></div>
+          <div class="col">
+            <button class="copy" id="copyBtn" data-i18n="tn.copy_invite">🔗 Copy invite</button>
+            <button class="copy" id="qrBtn" data-i18n="tn.show_qr">▦ Show QR</button>
+            <button class="copy" id="projBtn" data-i18n="tn.project">🖥 Project</button>
+          </div>
+        </div>
+        <div id="qrBox" class="qrbox" style="display:none"><canvas id="qrCanvas"></canvas></div>
+        <div class="acts">
+          <button class="prim" id="genBtn" data-i18n="tn.gen_room">🚀 Generate room code</button>
+        </div>
+        <p class="note" data-i18n-html="tn.assign_note"><b>Room codes are created server-side.</b> Students open the invite link and enter their class code — no account needed. We store only student codes, <b>never real names</b>, to keep this FERPA-light.</p>
+      </div>
+    </div>
+
+    <!-- BOARD -->
+    <div id="viewBoard" style="display:none">
+      <div class="board-prev">
+        <div class="btop"><span class="ttl" id="bClass">Class · —</span><span class="q" data-i18n="tn.board_sub">Same board · ad-free</span></div>
+        <div class="target"><span data-i18n="tn.assignment">ASSIGNMENT</span> <b id="bTitle">—</b> &nbsp;·&nbsp; <span data-i18n="tn.room">ROOM</span> <b id="bCode">—</b></div>
+        <div class="prog"><span class="pg" id="bDone">✅ 0/0</span><span class="pg" id="bTime">⏱ —</span><span class="pg" id="bLive">● idle</span></div>
+        <div class="lbtbl"><table>
+          <thead><tr><th>#</th><th data-i18n="tn.th_code">Code</th><th data-i18n="tn.th_solved">Solved</th><th data-i18n="tn.th_acc">Accuracy</th><th data-i18n="tn.th_avg2">Avg</th></tr></thead>
+          <tbody id="boardBody"></tbody>
+        </table></div>
+      </div>
+      <p class="note" data-i18n-html="tn.board_note"><b>Classroom board mode:</b> ad-free, large-type, live standings — built for projector display.</p>
+    </div>
+
+    <p class="compliance" data-i18n-html="tn.compliance"><b>Teacher-managed · FERPA-light.</b> Students join by code; we keep only anonymous codes, not real names. COPPA/GDPR handled on the game side.</p>
+
+    <div class="secttl"><span data-i18n="tn.cross_ttl">Try the other Duel family sites</span></div>
+    <div class="cross">
+      <a class="xcard" href="https://boardduel.com/teacher/">
+        <strong>♟ BoardDuel · 5 board games</strong>
+        <span data-i18n="tn.cross_bd">Chess · Gomoku · Connect 4 · Othello · Tic-Tac-Toe · live class board + CSV</span>
+      </a>
+      <a class="xcard" href="https://memoryduel.com/teacher/">
+        <strong>🧠 MemoryDuel · 12 categories · 6 languages</strong>
+        <span data-i18n="tn.cross_md">1v1 knowledge duels for vocabulary / history / science classrooms</span>
+      </a>
+    </div>
+  </section>
+</main>
+
+<div class="smodal" id="smodal" style="display:none" role="dialog" aria-modal="true">
+  <div class="sbox">
+    <div class="shead"><b id="sTitle">—</b><button class="ghost" id="sClose" aria-label="Close">✕</button></div>
+    <div id="sBody"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- auth overlay: reuses the site's existing email+password auth (no new BaaS) -->
+<div class="auth on" id="auth">
+  <div class="box">
+    <div class="auth-tabs">
+      <button type="button" class="atab on" id="tabLogin" data-i18n="tn.signin">Sign in</button>
+      <button type="button" class="atab" id="tabSignup" data-i18n="tn.signup">Create account</button>
+    </div>
+    <p class="mini" id="authHint">Sign in with your TeachDuel account to open your classes.</p>
+    <input id="authName" type="text" data-i18n-placeholder="tn.ph_name" placeholder="Your name (min 2 characters)" autocomplete="nickname" maxlength="20" style="display:none" />
+    <input id="authEmail" type="email" placeholder="you@school.org" autocomplete="email" />
+    <input id="authPass" type="password" data-i18n-placeholder="tn.ph_pass" placeholder="password (min 8 characters)" autocomplete="current-password" />
+    <div id="turnstile-container"></div>
+    <button id="authSend">Sign in</button>
+    <div class="auth-div"><span data-i18n="tn.or_continue">or continue with</span></div>
+    <div class="oauth-row">
+      <button type="button" class="btn-oauth" id="oauthGoogle">
+        <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M23.5 12.3c0-.9-.1-1.5-.3-2.2H12v4.1h6.5c-.1 1.1-.8 2.7-2.4 3.8l-.02.15 3.5 2.7.24.02c2.2-2.1 3.5-5.1 3.5-8.6z"/><path fill="#34A853" d="M12 24c3.2 0 5.9-1.1 7.9-2.9l-3.8-2.9c-1 .7-2.4 1.2-4.1 1.2-3.1 0-5.8-2.1-6.8-5l-.14.01-3.6 2.8-.05.13C3.4 21.3 7.4 24 12 24z"/><path fill="#FBBC05" d="M5.2 14.4c-.24-.72-.38-1.5-.38-2.4s.14-1.68.37-2.4l-.01-.16-3.65-2.8-.12.06C.5 8.3 0 10.1 0 12s.5 3.7 1.4 5.3l3.8-2.9z"/><path fill="#EA4335" d="M12 4.6c2.2 0 3.7.9 4.5 1.7l3.3-3.2C17.9 1.2 15.2 0 12 0 7.4 0 3.4 2.7 1.4 6.7l3.8 2.9c1-2.9 3.7-5 6.8-5z"/></svg>
+        Google
+      </button>
+      <button type="button" class="btn-oauth" id="oauthGithub">
+        <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path fill="#171515" d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1-.7.1-.7.1-.7 1.2 0 1.9 1.2 1.9 1.2 1 1.8 2.8 1.3 3.5 1 0-.8.4-1.3.7-1.6-2.7-.3-5.5-1.3-5.5-5.9 0-1.3.5-2.4 1.2-3.2 0-.4-.5-1.6.2-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17.3 4.7 18.3 5 18.3 5c.7 1.6.2 2.8.1 3.2.8.8 1.2 1.9 1.2 3.2 0 4.6-2.8 5.6-5.5 5.9.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .3z"/></svg>
+        GitHub
+      </button>
+    </div>
+    <p class="mini errbox" id="authErr"></p>
+  </div>
+</div>
+
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>
+<script src="/shared/qrcode.min.js"></script>
+<script src="./teacher.js"></script>
+</body>
+</html>

@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>NumeriDuel · Join this game</title>
+<meta name="robots" content="noindex" />
+<style>
+  /* 投影页：为课堂一体机/白板优化 —— 高对比、无滚动、一切够大。
+     左侧入场区（码+二维码），右侧实时榜（房间快照 4s 轮询）。
+     有人加入后入场区自动收窄，把空间让给榜。 */
+  :root { --ink:#10142A; --indigo:#3730A3; --amber:#F59E0B; --paper:#F6F5EF; --line:#E3E7F0; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  html,body { height:100%; }
+  body {
+    font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+    background: var(--paper); color: var(--ink);
+    display:flex; flex-direction:column; padding: 2.4vh 3vw; overflow:hidden;
+  }
+  .top { display:flex; align-items:center; justify-content:center; gap:2.4vw; flex-wrap:wrap; }
+  .brand { font-size: clamp(18px, 3vmin, 30px); font-weight:800; }
+  .brand b { color: var(--indigo); } .brand i { font-style:normal; color: var(--amber); }
+  .gametitle { font-size: clamp(15px, 2.4vmin, 26px); color:#4A5068; font-weight:600; }
+  .meta { font-size: clamp(14px, 2.2vmin, 24px); color:#6B7290; font-weight:600; }
+  .meta b { color: var(--indigo); }
+  .stage { flex:1; display:flex; gap:3vw; align-items:stretch; margin-top:1.6vh; min-height:0; }
+  /* 入场区 */
+  .join { display:flex; flex-direction:column; align-items:center; justify-content:center;
+          gap: 1.8vh; flex:0 0 auto; width:44%; transition: width .4s ease; }
+  body.live .join { width:26%; }
+  .code {
+    font-family: ui-monospace, 'Cascadia Mono', Consolas, monospace;
+    font-size: clamp(44px, 10vmin, 120px); font-weight:800; letter-spacing:.12em;
+    color: var(--indigo); line-height:1;
+  }
+  body.live .code { font-size: clamp(30px, 6vmin, 72px); }
+  #qr { width: min(30vmin, 300px); height: min(30vmin, 300px); image-rendering: pixelated;
+        background:#fff; padding: 1vmin; border-radius: 12px; box-shadow: 0 6px 24px rgba(16,20,42,.14); }
+  body.live #qr { width: min(18vmin, 170px); height: min(18vmin, 170px); }
+  .how { display:flex; flex-direction:column; gap: 1vh; align-items:flex-start; text-align:left; }
+  .how .step { font-size: clamp(13px, 2vmin, 20px); font-weight:600; }
+  .how .step em { font-style:normal; color: var(--indigo); font-weight:800; }
+  .joinurl { font-family: ui-monospace, Consolas, monospace;
+    font-size: clamp(14px, 2.4vmin, 26px); font-weight:700;
+    background:#fff; border:2px solid var(--line); border-radius: 10px; padding: .3em .65em; }
+  /* 实时榜 */
+  .board { flex:1; min-width:0; display:flex; flex-direction:column; gap:1.2vh; }
+  .board h2 { font-size: clamp(17px, 2.8vmin, 30px); font-weight:800; color:var(--ink); }
+  .board h2 small { color:#6B7290; font-weight:600; font-size:.62em; margin-left:.6em; }
+  .rows { flex:1; overflow:hidden; display:flex; flex-direction:column; gap:1.1vh; }
+  .prow { display:flex; align-items:center; gap:1.2vw; background:#fff; border:2px solid var(--line);
+          border-radius: 12px; padding: 1vh 1.2vw; min-height: 6.2vh; }
+  .prow .rk { font-size: clamp(15px, 2.6vmin, 28px); font-weight:800; color:#6B7290; width:2em; text-align:right; }
+  .prow.top1 .rk, .prow.top1 .sc { color: var(--amber); }
+  .prow .nm { font-size: clamp(16px, 2.8vmin, 30px); font-weight:700; flex:0 0 auto;
+              max-width: 34%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .prow .bar { flex:1; height: 2.2vh; min-height:10px; background:#EEF0FA; border-radius:99px; overflow:hidden; }
+  .prow .bar i { display:block; height:100%; background: linear-gradient(90deg,#6366F1,#3730A3); border-radius:99px; }
+  .prow .sc { font-size: clamp(16px, 3vmin, 32px); font-weight:800; color:var(--indigo); width:2.2em; text-align:right; }
+  .prow .sc small { font-size:.5em; color:#6B7290; font-weight:600; }
+  .empty { flex:1; display:flex; align-items:center; justify-content:center; flex-direction:column; gap:1.6vh;
+           color:#6B7290; }
+  .empty .big { font-size: clamp(20px, 3.6vmin, 40px); font-weight:800; color:#9AA1B9; }
+  .pulse { animation: pl 1.6s ease-in-out infinite; }
+  @keyframes pl { 0%,100%{opacity:.45} 50%{opacity:1} }
+  .fs { position:fixed; top:12px; right:12px; border:2px solid #D9DCF5; background:#fff; color:var(--ink);
+        border-radius:10px; padding:7px 13px; font-weight:700; font-size:13px; cursor:pointer; z-index:9; }
+  .fs:hover { border-color: var(--indigo); color: var(--indigo); }
+  @media (max-width: 760px) {
+    .stage { flex-direction:column; }
+    .join, body.live .join { width:100%; }
+    .how { display:none; }
+  }
+</style>
+</head>
+<body>
+  <button class="fs" id="fsBtn" type="button">⛶ Fullscreen</button>
+  <div class="top">
+    <div class="brand"><b>Math</b><i>Duel</i></div>
+    <div class="gametitle" id="gt"></div>
+    <div class="meta" id="meta"></div>
+  </div>
+  <div class="stage">
+    <div class="join">
+      <div class="code" id="rc">·····</div>
+      <canvas id="qr"></canvas>
+      <div class="how">
+        <div class="step"><em>1</em> &nbsp;Open camera</div>
+        <div class="step"><em>2</em> &nbsp;Scan the code</div>
+        <div class="step"><em>3</em> &nbsp;You're in — no account needed</div>
+      </div>
+      <div class="joinurl">numeriduel.com/join</div>
+    </div>
+    <div class="board">
+      <h2>Live standings <small id="cnt"></small></h2>
+      <div class="rows" id="rows">
+        <div class="empty">
+          <div class="big pulse">Waiting for players…</div>
+          <div class="step">Scores appear here the moment students join and answer.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script src="/shared/qrcode.min.js"></script>
+<script>
+(function () {
+  'use strict';
+  var q = new URLSearchParams(location.search);
+  var code = (q.get('c') || '').toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 8);
+  var title = (q.get('t') || '').slice(0, 60);
+  if (title) document.getElementById('gt').textContent = title;
+  document.getElementById('rc').textContent = code || '·····';
+  document.title = 'Join ' + code + ' · NumeriDuel';
+
+  /* 二维码指向万能 join 页（而非直链游戏页）：join 页会解析房间对应的游戏再跳转，
+     换游戏/换模式不用重印投影页，也避免链接过长降低扫码成功率。 */
+  var target = 'https://numeriduel.com/join/?c=' + encodeURIComponent(code);
+  try {
+    var qr = window.qrcode(0, 'M');
+    qr.addData(target);
+    qr.make();
+    var cv = document.getElementById('qr');
+    var side = 560;                       // 内部分辨率放大，投影不糊
+    cv.width = side; cv.height = side;
+    var ctx = cv.getContext('2d');
+    var mm = qr.getModuleCount();
+    var cell = Math.floor(side / mm);
+    var off = Math.floor((side - cell * mm) / 2);
+    ctx.fillStyle = '#FFFFFF';
+    ctx.fillRect(0, 0, side, side);
+    ctx.fillStyle = '#10142A';
+    for (var r = 0; r < mm; r++) {
+      for (var c = 0; c < mm; c++) {
+        if (qr.isDark(r, c)) ctx.fillRect(off + c * cell, off + r * cell, cell, cell);
+      }
+    }
+  } catch (e) {
+    document.getElementById('qr').style.display = 'none';
+  }
+
+  /* ── 实时榜：轮询房间只读快照（/api/rooms/:code/state，DO 直出）。
+     按分数降序展示 —— 分数=答对题数，是「做得对」的榜，不是「做得快」的榜
+     （课堂练习不得按计时公开排名，NCTM 2023）。 ── */
+  var MODE_LABEL = { competition: 'Competition', practice: 'Practice', duel: 'Duel', battle: 'Battle', friend: 'Friendly', ai: 'vs AI', pass: 'Pass & Play', ranked: 'Ranked' };
+  var rowsEl = document.getElementById('rows');
+  var cntEl = document.getElementById('cnt');
+  var metaEl = document.getElementById('meta');
+  var errStreak = 0;
+
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (ch) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch];
+    });
+  }
+
+  function render(d) {
+    var players = (d && d.players) || [];
+    // 只显示在线的：断线残留的旧附件会污染榜（比如重开后旧名单）
+    var live = players.filter(function (p) { return p.online !== false; });
+    cntEl.textContent = live.length ? '(' + live.length + ' playing)' : '';
+    var bits = [];
+    if (d && d.mode && MODE_LABEL[d.mode]) bits.push(MODE_LABEL[d.mode]);
+    if (d && d.maxRounds) bits.push('Round ' + ((d.round || 0) + (d.round ? 0 : 1)) + ' / ' + d.maxRounds);
+    metaEl.textContent = bits.join(' · ');
+    if (!live.length) {
+      document.body.classList.remove('live');
+      rowsEl.innerHTML = '<div class="empty"><div class="big pulse">Waiting for players…</div>' +
+        '<div class="step">Scores appear here the moment students join and answer.</div></div>';
+      return;
+    }
+    document.body.classList.add('live');
+    var max = 1;
+    for (var i = 0; i < live.length; i++) {
+      var v = live[i].score || 0;
+      if (v > max) max = v;
+    }
+    var html = '';
+    for (var j = 0; j < live.length && j < 30; j++) {
+      var p = live[j];
+      var val = p.score || 0;
+      var extra = p.boardsDone > 0 ? '<small>/' + p.boardsDone + ' boards</small>' : '';
+      var w = Math.round((100 * val) / max);
+      html += '<div class="prow' + (j === 0 && val > 0 ? ' top1' : '') + '">' +
+        '<span class="rk">' + (j + 1) + '</span>' +
+        '<span class="nm">' + esc(p.name) + '</span>' +
+        '<span class="bar"><i style="width:' + w + '%"></i></span>' +
+        '<span class="sc">' + val + extra + '</span></div>';
+    }
+    rowsEl.innerHTML = html;
+  }
+
+  function tick() {
+    if (!code) return;
+    fetch('/api/rooms/' + encodeURIComponent(code) + '/state', { cache: 'no-store' })
+      .then(function (r) { if (!r.ok) throw new Error('http ' + r.status); return r.json(); })
+      .then(function (d) { errStreak = 0; render(d); })
+      .catch(function () {
+        errStreak++;
+        // 连续失败只在标题上提示，不动榜面（投影上闪烁比短暂滞后更糟）
+        if (errStreak >= 3) cntEl.textContent = '(reconnecting…)';
+      });
+  }
+  tick();
+  setInterval(tick, 4000);
+
+  document.getElementById('fsBtn').addEventListener('click', function () {
+    var el = document.documentElement;
+    if (document.fullscreenElement) { document.exitFullscreen(); return; }
+    if (el.requestFullscreen) el.requestFullscreen().catch(function () {});
+  });
+})();
+</script>
+</body>
+</html>
