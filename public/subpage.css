@@ -1,0 +1,106 @@
+/* ════════════════════════════════════════════════════════════════
+   TeachDuel · 子页公共样式（v3 · 2026-10-01）
+   ────────────────────────────────────────────────────────────────
+   用于 /about /privacy /contact /how-to-play 四个子页。
+   与 boardduel / memoryduel / numeriduel 子页同构：
+   · body.home-v3 作用域：暗底 ink + Teal 棋盘格底纹
+   · .panel / .btn / .sf-item 等组件名沿用 boardduel 约定
+   · 字体 + token 由 /tokens-teach.css 提供（与三站共享）
+
+   子页与首页共用同一个 body class（home-v3），保证：
+   · 4 个站子页 + 首页 + Console 5 个页面的视觉 DNA 100% 一致
+   · 后续若加 dark mode，只需修改 home-v3 即可全局生效
+   ════════════════════════════════════════════════════════════════ */
+
+body.home-v3 {
+  background-color: var(--ink);
+  color: var(--paper);
+  font-family: var(--ui);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  background-image:
+    linear-gradient(45deg, rgba(15, 118, 110, .045) 25%, transparent 25%, transparent 75%, rgba(15, 118, 110, .045) 75%),
+    linear-gradient(45deg, rgba(15, 118, 110, .045) 25%, transparent 25%, transparent 75%, rgba(15, 118, 110, .045) 75%),
+    linear-gradient(rgba(15, 118, 110, .035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(15, 118, 110, .035) 1px, transparent 1px);
+  background-size: 96px 96px, 96px 96px, 24px 24px, 24px 24px;
+  background-position: 0 0, 48px 48px, 0 0, 0 0;
+  overflow-x: hidden;
+  margin: 0;
+}
+body.home-v3 a { color: inherit; text-decoration: none; }
+body.home-v3 :focus-visible { outline: 2px solid var(--brand); outline-offset: 3px; border-radius: 6px; }
+body.home-v3 .num { font-family: var(--disp); font-variant-numeric: tabular-nums; }
+
+/* 容器 */
+.main { padding: 0 26px; }
+.wrap { max-width: 1020px; margin: 0 auto; }
+
+/* Hero（与 boardduel 同构） */
+.hero { text-align: center; padding: 78px 0 30px; }
+.hero h1 { font-family: var(--disp); font-weight: 700; font-size: clamp(30px, 4.6vw, 46px); line-height: 1.22; letter-spacing: .01em; margin-bottom: 14px; color: var(--paper); }
+.hero h1 em { font-style: normal; color: var(--brand); }
+.hero .sub { color: var(--mute); font-size: 1.06rem; max-width: 36em; margin: 0 auto 26px; }
+.hero .sub b { color: var(--paper); }
+
+/* 主区与 boardduel 同构：双栏 + 单栏切换 */
+.duo { display: grid; grid-template-columns: 3fr 2fr; gap: 22px; padding: 24px 0 60px; align-items: start; }
+.duo > * { min-width: 0; }
+
+/* Panel（白卡浮在暗底） */
+.panel { background: #fff; border: 1px solid var(--line); border-radius: var(--r-card); padding: 22px 22px 20px; margin-bottom: 22px; }
+.panel h2 { font-family: var(--disp); font-weight: 700; font-size: 1.18rem; letter-spacing: -.01em; margin: 0 0 14px; color: #1A1640; }
+.panel h3 { font-family: var(--ui); font-weight: 700; font-size: .95rem; color: var(--brand); margin: 18px 0 6px; text-transform: uppercase; letter-spacing: .08em; }
+.panel p, .panel li { font-size: .96rem; line-height: 1.6; color: #3B3F58; }
+.panel p { margin: 0 0 12px; max-width: 64ch; }
+.panel ul, .panel ol { margin: 0 0 12px; padding-left: 1.4em; }
+.panel li { margin-bottom: 8px; }
+.panel li b { color: #1A1640; }
+.panel a { color: #1A1640; border-bottom: 1px solid var(--brand); }
+.panel a:hover { color: var(--brand-hover); }
+
+/* FAQ 折叠（隐私 / 联系 子页用） */
+.faq-list { list-style: none; padding: 0; margin: 0; }
+.faq-list > li { padding: 14px 0; border-bottom: 1px dashed var(--line); }
+.faq-list > li:last-child { border-bottom: 0; }
+.faq-list b { display: inline-block; min-width: 80px; color: var(--brand); font-family: var(--disp); font-weight: 700; margin-right: 12px; }
+
+/* Contact 列表 */
+.contact-list { list-style: none; padding: 0; margin: 0; }
+.contact-list > li { padding: 14px 0; border-bottom: 1px dashed var(--line); display: grid; grid-template-columns: 180px 1fr; gap: 24px; align-items: start; }
+.contact-list > li:last-child { border-bottom: 0; }
+.contact-list .label { font-family: var(--mono); font-size: .82rem; letter-spacing: .08em; text-transform: uppercase; color: var(--brand); padding-top: 2px; }
+.contact-list b { display: block; font-weight: 700; font-size: 1rem; margin-bottom: 4px; color: #1A1640; }
+
+/* CTA button */
+.btn { display: inline-flex; align-items: center; gap: 8px; border-radius: 13px; font-weight: 700; font-size: 1rem; padding: 12px 26px; border: 1px solid transparent; transition: transform .16s ease, box-shadow .16s ease; margin-top: 18px; }
+.btn:hover { transform: translateY(-2px); }
+.btn-primary { background: var(--brand); color: #fff; box-shadow: 0 8px 20px rgba(15, 118, 110, .32); }
+.btn-primary:hover { box-shadow: 0 10px 24px rgba(15, 118, 110, .42); }
+.btn-ghost { background: #fff; color: var(--brand); border-color: #CCFBF1; }
+.btn-ghost:hover { border-color: var(--brand-bright); }
+
+/* Footer (与 boardduel 同构) */
+.site-footer { background: var(--card); color: #C9CCF2; margin-top: 30px; padding: 44px 0 30px; }
+.sf-title { font-family: var(--disp); font-weight: 700; color: #fff; font-size: 1.02rem; margin-bottom: 16px; letter-spacing: -.01em; }
+.sf-matrix { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 22px; }
+.sf-item {
+  display: inline-flex; align-items: center; gap: 9px; border: 1px solid rgba(255,255,255,.16);
+  border-radius: 12px; padding: 11px 18px; font-size: .9rem; font-weight: 600; color: #fff;
+  transition: border-color .15s ease, transform .15s ease;
+}
+.sf-item:hover { border-color: rgba(255,255,255,.45); transform: translateY(-2px); }
+.sf-item .pip { width: 9px; height: 9px; border-radius: 3px; flex: none; }
+.sf-item.current { background: rgba(15, 118, 110, .22); border-color: rgba(45, 212, 191, .5); }
+.sf-links { display: flex; gap: 20px; flex-wrap: wrap; font-size: .84rem; margin-bottom: 16px; }
+.sf-links a:hover { color: #fff; text-decoration: underline; text-underline-offset: 3px; }
+.sf-copy { font-size: .76rem; color: #8B8FC0; border-top: 1px solid rgba(255,255,255,.12); padding-top: 16px; }
+
+@media (max-width: 979px) {
+  .duo { grid-template-columns: 1fr; }
+  .contact-list > li { grid-template-columns: 1fr; gap: 4px; }
+}
+@media (max-width: 639px) {
+  .wrap { padding: 0 14px; }
+  .hero { padding: 44px 0 14px; }
+}

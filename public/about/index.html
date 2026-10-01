@@ -10,98 +10,92 @@
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="canonical" href="https://teachduel.com/about/">
 <link rel="stylesheet" href="/tokens-teach.css">
-<style>
-/* 共享子页样式：与首页共用 tokens-teach.css，仅写结构 + 微调 */
-* { box-sizing: border-box; }
-html, body {
-  margin: 0;
-  background: var(--paper);
-  color: var(--ink);
-  font-family: var(--font-body);
-  line-height: var(--lh-base);
-  -webkit-font-smoothing: antialiased;
-}
-a { color: inherit; text-decoration: none; }
-.masthead {
-  border-bottom: 3px double var(--rule);
-  padding: 14px 24px 18px;
-}
-.masthead-row {
-  display: flex; justify-content: space-between; align-items: center;
-  max-width: var(--measure-wide); margin: 0 auto; gap: 24px;
-}
-.masthead-logo b { font-weight: 700; font-size: 1.5rem; letter-spacing: -0.02em; color: var(--ink); }
-.masthead-logo i { font-style: normal; font-weight: 400; font-size: 1.5rem; color: var(--accent); }
-.masthead-nav { display: flex; gap: 24px; font-family: var(--font-mono); font-size: var(--fs-xs); letter-spacing: 0.06em; text-transform: uppercase; color: var(--mute); }
-.masthead-nav a { border-bottom: 1px solid transparent; padding-bottom: 2px; transition: border-color var(--dur-fast); }
-.masthead-nav a:hover { color: var(--ink); border-bottom-color: var(--accent); }
-.masthead-nav a[aria-current="page"] { color: var(--ink); border-bottom-color: var(--accent); }
-.section-rule { display: flex; align-items: center; gap: 14px; max-width: var(--measure-wide); margin: 64px auto 40px; padding: 0 24px; }
-.section-rule::before, .section-rule::after { content: ""; flex: 1; height: 1px; background: var(--rule); }
-.section-rule-tag { font-family: var(--font-mono); font-size: var(--fs-xs); letter-spacing: 0.18em; text-transform: uppercase; color: var(--mute); }
-.section-rule-tag b { color: var(--ink); font-weight: 700; }
-.section { max-width: var(--measure-wide); margin: 0 auto; padding: 0 24px 80px; }
-.section h1 { font-weight: 700; font-size: clamp(2rem, 5vw, 3.6rem); letter-spacing: -0.025em; line-height: var(--lh-tight); margin: 0 0 24px; max-width: 22ch; }
-.section h2 { font-weight: 700; font-size: 1.5rem; letter-spacing: -0.015em; margin: 48px 0 12px; }
-.section p, .section li { font-size: 1rem; max-width: 64ch; line-height: var(--lh-base); color: var(--ink); }
-.section p { color: var(--mute); margin: 0 0 16px; }
-.section .lede { font-size: 1.18rem; color: var(--mute); line-height: var(--lh-snug); max-width: 56ch; }
-.section a { color: var(--ink); border-bottom: 1px solid var(--accent); }
-.section a:hover { color: var(--accent); }
-.section ul { margin: 0 0 16px; padding-left: 1.4em; }
-.section li { color: var(--mute); margin-bottom: 8px; }
-.section li b { color: var(--ink); }
-.faq-link { display: inline-block; padding: 10px 14px; border: 1px solid var(--rule); border-radius: var(--r-md); font-family: var(--font-mono); font-size: var(--fs-xs); letter-spacing: 0.08em; text-transform: uppercase; margin-top: 8px; transition: border-color var(--dur-fast); }
-.faq-link:hover { border-color: var(--accent); }
-@media (max-width: 720px) { .masthead-nav { display: none; } }
-</style>
+<link rel="stylesheet" href="/subpage.css">
 </head>
-<body>
+<body class="home-v3">
+<main class="main">
+  <section class="wrap">
+    <section class="hero">
+      <h1>One console, three <em>free</em> classroom game sites.</h1>
+      <p class="sub">TeachDuel is the teacher console for the <b>Duel Family</b> — NumeriDuel, BoardDuel, MemoryDuel. Pick a game, create a room, share the code. That's it.</p>
+    </section>
 
-<header class="masthead">
-  <div class="masthead-row">
-    <a href="/" class="masthead-logo"><b>Teach</b><i>Duel</i></a>
-    <nav class="masthead-nav">
-      <a href="/console/">Console</a>
-      <a href="/how-to-play/">How to play</a>
-      <a href="/about/" aria-current="page">About</a>
-      <a href="/privacy/">Privacy</a>
-      <a href="/contact/">Contact</a>
-    </nav>
-  </div>
-</header>
+    <section class="duo">
+      <div class="panel">
+        <h2>Why we built it</h2>
+        <p>TeachDuel started as a single math game for a single classroom. Then teachers asked for board games. Then for knowledge quizzes. Today, three sites share one console — and one promise: <b>no student is ever identified to us</b>.</p>
+        <p>Students enter classrooms using codes they pick themselves — <b>S07</b>, <b>DOG-EARS</b>, anything. Those codes are stored locally in each browser. Teachers see them. We do not.</p>
 
-<main>
-  <div class="section-rule"><span class="section-rule-tag"><b>§ ABOUT</b> · Why we exist</span></div>
-  <section class="section">
-    <h1>One console, three sites, zero student identity data.</h1>
-    <p class="lede">TeachDuel started as a single math game for a single classroom. Then teachers asked for board games. Then for knowledge quizzes. Today, three sites share one console — and one promise: <b>no student is ever identified to us</b>.</p>
+        <h3>What we mean by "no student identity"</h3>
+        <ul>
+          <li>No student <b>names</b></li>
+          <li>No student <b>emails</b> or <b>phones</b></li>
+          <li>No <b>school IDs</b>, government IDs, birthdays</li>
+          <li>No <b>IP addresses</b> persisted (rate-limit only)</li>
+          <li>No <b>behavioral tracking</b>, no third-party cookies, no fingerprinting</li>
+          <li>No <b>AI risk-scoring</b> on students (rejected by design)</li>
+        </ul>
 
-    <h2>What we mean by "no student identity"</h2>
-    <p>Students enter classrooms using codes they pick themselves — <b>S07</b>, <b>DOG-EARS</b>, anything. Those codes are stored locally in each browser. Teachers see them. We do not. We never see names, emails, school IDs, IP addresses, or behavioral fingerprints.</p>
+        <h3>What we won't do</h3>
+        <ul>
+          <li>No ads. No third-party trackers. No behavioral advertising.</li>
+          <li>No "premium" tier. <b>Free forever.</b></li>
+          <li>No AI risk-scoring of students.</li>
+          <li>No data sharing with third parties. EU residency for EU users.</li>
+        </ul>
 
-    <h2>Why three sites in one console?</h2>
-    <ul>
-      <li><b>NumeriDuel</b> — logic, math, sudoku. Five games.</li>
-      <li><b>BoardDuel</b> — strategy, board games. Five games.</li>
-      <li><b>MemoryDuel</b> — vocabulary, history, science. Six languages.</li>
-    </ul>
-    <p>Teachers don't want three dashboards. They want one room-code flow that works anywhere. The console aggregates results across all three sites so a single "Class weak spot" view shows where each student is stuck — math, strategy, or recall.</p>
+        <a class="btn btn-primary" href="/console/">→ Open the Console</a>
+      </div>
 
-    <h2>What we won't do</h2>
-    <ul>
-      <li>No ads. No third-party trackers. No cross-site fingerprinting.</li>
-      <li>No "premium" tier that gates basic features. Free forever.</li>
-      <li>No behavioral advertising. No data sharing with third parties.</li>
-      <li>No AI risk-scoring of students (rejected by design — see our <a href="/privacy/">privacy page</a>).</li>
-    </ul>
+      <div class="panel">
+        <h2>Built by</h2>
+        <p>TeachDuel is a small studio. We make classroom games because we think the next generation of educational software should default to <i>collect less</i>, not more.</p>
 
-    <h2>Built by</h2>
-    <p>TeachDuel is a small studio. We make classroom games because we think the next generation of educational software should default to <i>collect less</i>, not more.</p>
+        <h3>Contact</h3>
+        <ul>
+          <li>Privacy / GDPR: <a href="mailto:privacy@teachduel.com">privacy@teachduel.com</a></li>
+          <li>Support: <a href="mailto:support@teachduel.com">support@teachduel.com</a></li>
+          <li>Press / districts: <a href="mailto:hello@teachduel.com">hello@teachduel.com</a></li>
+          <li>Trademark / legal: <a href="mailto:legal@teachduel.com">legal@teachduel.com</a></li>
+        </ul>
 
-    <a href="/console/" class="faq-link">→ Open the Console</a>
+        <h3>Trademark</h3>
+        <p>TeachDuel, Duel Family, NumeriDuel, BoardDuel, MemoryDuel — all US-registered. Filing receipts on file.</p>
+      </div>
+    </section>
   </section>
 </main>
 
+<footer class="site-footer">
+  <div class="wrap" style="padding-bottom: 4px;">
+    <h3 class="sf-title">Duel Family</h3>
+    <div class="sf-matrix">
+      <a class="sf-item current" href="/">
+        <span class="pip" style="background:#0F766E"></span> TeachDuel
+        <span style="font-size:.72rem; font-weight:400; opacity:.7;">· Teacher Console</span>
+      </a>
+      <a class="sf-item" href="https://numeriduel.com">
+        <span class="pip" style="background:#3730A3"></span> NumeriDuel
+        <span style="font-size:.72rem; font-weight:400; opacity:.7;">· 5 logic games</span>
+      </a>
+      <a class="sf-item" href="https://boardduel.com">
+        <span class="pip" style="background:#7C3AED"></span> BoardDuel
+        <span style="font-size:.72rem; font-weight:400; opacity:.7;">· 5 strategy games</span>
+      </a>
+      <a class="sf-item" href="https://memoryduel.com">
+        <span class="pip" style="background:#EA580C"></span> MemoryDuel
+        <span style="font-size:.72rem; font-weight:400; opacity:.7;">· knowledge battle</span>
+      </a>
+    </div>
+    <div class="sf-links">
+      <a href="/console/">Console</a>
+      <a href="/how-to-play/">How to play</a>
+      <a href="/about/">About</a>
+      <a href="/privacy/">Privacy</a>
+      <a href="/contact/">Contact</a>
+    </div>
+    <p class="sf-copy">© 2026 Duel Family · TeachDuel · No student identity data · 180-day retention</p>
+  </div>
+</footer>
 </body>
 </html>

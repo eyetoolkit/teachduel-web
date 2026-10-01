@@ -10,120 +10,107 @@
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="canonical" href="https://teachduel.com/privacy/">
 <link rel="stylesheet" href="/tokens-teach.css">
-<style>
-* { box-sizing: border-box; }
-html, body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--font-body); line-height: var(--lh-base); -webkit-font-smoothing: antialiased; }
-a { color: inherit; text-decoration: none; }
-.masthead { border-bottom: 3px double var(--rule); padding: 14px 24px 18px; }
-.masthead-row { display: flex; justify-content: space-between; align-items: center; max-width: var(--measure-wide); margin: 0 auto; gap: 24px; }
-.masthead-logo b { font-weight: 700; font-size: 1.5rem; letter-spacing: -0.02em; color: var(--ink); }
-.masthead-logo i { font-style: normal; font-weight: 400; font-size: 1.5rem; color: var(--accent); }
-.masthead-nav { display: flex; gap: 24px; font-family: var(--font-mono); font-size: var(--fs-xs); letter-spacing: 0.06em; text-transform: uppercase; color: var(--mute); }
-.masthead-nav a { border-bottom: 1px solid transparent; padding-bottom: 2px; transition: border-color var(--dur-fast); }
-.masthead-nav a:hover { color: var(--ink); border-bottom-color: var(--accent); }
-.masthead-nav a[aria-current="page"] { color: var(--ink); border-bottom-color: var(--accent); }
-.section-rule { display: flex; align-items: center; gap: 14px; max-width: var(--measure-wide); margin: 64px auto 40px; padding: 0 24px; }
-.section-rule::before, .section-rule::after { content: ""; flex: 1; height: 1px; background: var(--rule); }
-.section-rule-tag { font-family: var(--font-mono); font-size: var(--fs-xs); letter-spacing: 0.18em; text-transform: uppercase; color: var(--mute); }
-.section-rule-tag b { color: var(--ink); font-weight: 700; }
-.section { max-width: var(--measure-wide); margin: 0 auto; padding: 0 24px 80px; }
-.section h1 { font-weight: 700; font-size: clamp(2rem, 5vw, 3.6rem); letter-spacing: -0.025em; line-height: var(--lh-tight); margin: 0 0 24px; max-width: 22ch; }
-.section h2 { font-weight: 700; font-size: 1.5rem; letter-spacing: -0.015em; margin: 48px 0 12px; }
-.section h3 { font-family: var(--font-mono); font-size: var(--fs-sm); letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); margin: 24px 0 8px; }
-.section p, .section li { font-size: 1rem; max-width: 64ch; line-height: var(--lh-base); color: var(--ink); }
-.section p { color: var(--mute); margin: 0 0 16px; }
-.section .lede { font-size: 1.18rem; color: var(--mute); line-height: var(--lh-snug); max-width: 56ch; }
-.section a { color: var(--ink); border-bottom: 1px solid var(--accent); }
-.section a:hover { color: var(--accent); }
-.section ul, .section ol { margin: 0 0 16px; padding-left: 1.4em; }
-.section li { color: var(--mute); margin-bottom: 8px; }
-.section li b { color: var(--ink); }
-.dl-table { width: 100%; max-width: 64ch; border-collapse: collapse; margin: 24px 0; font-size: 0.92rem; }
-.dl-table th, .dl-table td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--rule); }
-.dl-table th { font-family: var(--font-mono); font-size: var(--fs-xs); letter-spacing: 0.08em; text-transform: uppercase; color: var(--mute); font-weight: 500; }
-.dl-table td { color: var(--ink); }
-.faq-link { display: inline-block; padding: 10px 14px; border: 1px solid var(--rule); border-radius: var(--r-md); font-family: var(--font-mono); font-size: var(--fs-xs); letter-spacing: 0.08em; text-transform: uppercase; margin-top: 16px; transition: border-color var(--dur-fast); }
-.faq-link:hover { border-color: var(--accent); }
-@media (max-width: 720px) { .masthead-nav { display: none; } .dl-table { font-size: 0.85rem; } .dl-table th, .dl-table td { padding: 8px 6px; } }
-</style>
+<link rel="stylesheet" href="/subpage.css">
 </head>
-<body>
+<body class="home-v3">
+<main class="main">
+  <section class="wrap">
+    <section class="hero">
+      <h1>FERPA-light, <em>GDPR-friendly</em> by design.</h1>
+      <p class="sub">Full list of what we collect, what we don't, and how to take your data out.</p>
+    </section>
 
-<header class="masthead">
-  <div class="masthead-row">
-    <a href="/" class="masthead-logo"><b>Teach</b><i>Duel</i></a>
-    <nav class="masthead-nav">
-      <a href="/console/">Console</a>
-      <a href="/how-to-play/">How to play</a>
-      <a href="/about/">About</a>
-      <a href="/privacy/" aria-current="page">Privacy</a>
-      <a href="/contact/">Contact</a>
-    </nav>
-  </div>
-</header>
+    <section class="duo">
+      <div class="panel">
+        <h2>What we don't collect</h2>
+        <ul>
+          <li><b>Student names.</b> Students identify with self-chosen codes (S07, DOG-EARS, anything).</li>
+          <li><b>Student emails, phone numbers, parent emails.</b> Not at signup, not at any later point.</li>
+          <li><b>School IDs, government IDs, birthdays.</b> Never requested, never stored.</li>
+          <li><b>IP addresses.</b> Logged only for rate-limiting during the request; not persisted beyond the request.</li>
+          <li><b>Behavioral tracking.</b> No third-party cookies, no cross-site fingerprinting, no analytics IDs.</li>
+          <li><b>AI risk-scoring.</b> We do not run predictive models on students. <i>Rejected by design</i>.</li>
+        </ul>
 
-<main>
-  <div class="section-rule"><span class="section-rule-tag"><b>§ PRIVACY</b> · Our commitments</span></div>
-  <section class="section">
-    <h1>FERPA-light and GDPR-friendly by design.</h1>
-    <p class="lede">This is the full list of what we collect, what we don't, and how to take your data out.</p>
+        <h2>What we collect</h2>
+        <table class="dl-table">
+          <thead>
+            <tr><th>Item</th><th>Why</th><th>Retention</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Anonymous class code (e.g. S07)</td><td>To attribute answers to a row in the dashboard</td><td>180 days, then auto-delete</td></tr>
+            <tr><td>Per-question answer + duration</td><td>To show mastery by student and round</td><td>180 days, then auto-delete</td></tr>
+            <tr><td>Teacher account email</td><td>If you signed up — to log in and recover access</td><td>Until you delete it</td></tr>
+            <tr><td>Anonymous teacher ID (cookie)</td><td>To keep classes separated between browsers</td><td>Browser-local only</td></tr>
+          </tbody>
+        </table>
+        <style>.dl-table{width:100%;max-width:64ch;border-collapse:collapse;margin:18px 0;font-size:.92rem}.dl-table th,.dl-table td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);color:#3B3F58}.dl-table th{font-family:var(--ui);font-weight:700;color:#1A1640;text-transform:uppercase;letter-spacing:.08em;font-size:.78rem}.dl-table td:first-child{font-weight:700;color:#1A1640}</style>
 
-    <h2>What we don't collect</h2>
-    <ul>
-      <li><b>Student names.</b> Students identify with self-chosen codes (S07, DOG-EARS, anything).</li>
-      <li><b>Student emails, phone numbers, parent emails.</b> Not at signup, not at any later point.</li>
-      <li><b>School IDs, government IDs, birthdays.</b> Never requested, never stored.</li>
-      <li><b>IP addresses.</b> Logged only for rate-limiting during the request; not persisted beyond the request.</li>
-      <li><b>Behavioral tracking.</b> No third-party cookies, no cross-site fingerprinting, no analytics IDs.</li>
-      <li><b>AI risk-scoring.</b> We do not run predictive models on students. <i>Rejected by design</i>.</li>
-    </ul>
+        <h2>GDPR · EU users</h2>
+        <ul>
+          <li><b>Lawful basis:</b> Article 6(1)(a) consent for the teacher account; Article 6(1)(f) legitimate interest for the educational record.</li>
+          <li><b>Data residency:</b> Stored in EU-region Cloudflare KV. Never transferred outside EU for processing.</li>
+          <li><b>Your rights:</b> Access, rectification, erasure, restriction, portability. Email <b>privacy@teachduel.com</b> to exercise.</li>
+          <li><b>DPO contact:</b> dpo@teachduel.com</li>
+        </ul>
 
-    <h2>What we collect</h2>
-    <table class="dl-table">
-      <thead>
-        <tr><th>Item</th><th>Why</th><th>Retention</th></tr>
-      </thead>
-      <tbody>
-        <tr><td>Anonymous class code (e.g. S07)</td><td>To attribute answers to a row in the dashboard</td><td>180 days, then auto-delete</td></tr>
-        <tr><td>Per-question answer + duration</td><td>To show mastery by student and round</td><td>180 days, then auto-delete</td></tr>
-        <tr><td>Teacher account email</td><td>If you signed up — to log in and recover access</td><td>Until you delete it</td></tr>
-        <tr><td>Anonymous teacher ID (cookie)</td><td>To keep classes separated between browsers</td><td>Browser-local only</td></tr>
-      </tbody>
-    </table>
+        <h2>FERPA · US schools</h2>
+        <p>We do not receive student education records from schools. Teachers upload anonymous class codes voluntarily. Records are not used for any commercial purpose. We do not act as a "school official" with a legitimate educational interest.</p>
 
-    <h2>GDPR · EU users</h2>
-    <ul>
-      <li><b>Lawful basis:</b> Article 6(1)(a) consent for the teacher account; Article 6(1)(f) legitimate interest for the educational record.</li>
-      <li><b>Data residency:</b> Stored in EU-region Cloudflare KV. Never transferred outside EU for processing.</li>
-      <li><b>Your rights:</b> Access, rectification, erasure, restriction, portability. Email <b>privacy@teachduel.com</b> to exercise.</li>
-      <li><b>DPO contact:</b> dpo@teachduel.com</li>
-    </ul>
+        <h2>COPPA · under 13</h2>
+        <p>Our service does not target children under 13 and does not knowingly collect personal information from them. If you are a teacher using TeachDuel with younger students, you do so under your school's authorization.</p>
+      </div>
 
-    <h2>FERPA · US schools</h2>
-    <p>We do not receive student education records from schools. Teachers upload anonymous class codes voluntarily. Records are not used for any commercial purpose. We do not act as a "school official" with a legitimate educational interest.</p>
+      <div class="panel">
+        <h2>How to take your data out</h2>
+        <ol>
+          <li>Open the <b>Privacy</b> tab in the teacher console (top right of any class view).</li>
+          <li>Click <b>Export my data</b> to download a JSON archive of all classes, assignments, and student answers.</li>
+          <li>Click <b>Delete my account & data</b> to wipe everything immediately. This cannot be undone.</li>
+        </ol>
+        <p>If either button is greyed out, email <b>privacy@teachduel.com</b> and we'll process your request manually within 30 days.</p>
 
-    <h2>COPPA · under 13</h2>
-    <p>Our service does not target children under 13 and does not knowingly collect personal information from them. If you are a teacher using TeachDuel with younger students, you do so under your school's authorization.</p>
+        <h2>Cookies</h2>
+        <p>We set <b>two</b> cookies: a session cookie (so you don't have to log in on every page) and an anonymous teacher ID. No tracking cookies. No third-party cookies.</p>
 
-    <h2>How to take your data out</h2>
-    <ol>
-      <li>Open the <b>Privacy</b> tab in the teacher console (top right of any class view).</li>
-      <li>Click <b>Export my data</b> to download a JSON archive of all classes, assignments, and student answers.</li>
-      <li>Click <b>Delete my account & data</b> to wipe everything immediately. This cannot be undone.</li>
-    </ol>
-    <p>If either button is greyed out, email <b>privacy@teachduel.com</b> and we'll process your request manually within 30 days.</p>
+        <h2>Changes to this policy</h2>
+        <p>We will post any material change on this page and on the in-console privacy notice. The date below reflects the most recent revision.</p>
 
-    <h2>Cookies</h2>
-    <p>We set <b>two</b> cookies: a session cookie (so you don't have to log in on every page) and an anonymous teacher ID. No tracking cookies. No third-party cookies.</p>
+        <p style="margin-top: 32px; font-family: var(--mono); font-size: .82rem; letter-spacing: .08em; color: var(--brand); text-transform: uppercase;">LAST REVISED · 2026-10-01</p>
 
-    <h2>Changes to this policy</h2>
-    <p>We will post any material change on this page and on the in-console privacy notice. The date below reflects the most recent revision.</p>
-
-    <p style="margin-top: 32px; font-family: var(--font-mono); font-size: var(--fs-xs); letter-spacing: 0.08em; color: var(--mute);">LAST REVISED · 2026-10-01</p>
-
-    <a href="/console/" class="faq-link">→ Open the Console</a>
+        <a class="btn btn-primary" href="/console/">→ Open the Console</a>
+      </div>
+    </section>
   </section>
 </main>
 
+<footer class="site-footer">
+  <div class="wrap" style="padding-bottom: 4px;">
+    <h3 class="sf-title">Duel Family</h3>
+    <div class="sf-matrix">
+      <a class="sf-item current" href="/">
+        <span class="pip" style="background:#0F766E"></span> TeachDuel
+        <span style="font-size:.72rem; font-weight:400; opacity:.7;">· Teacher Console</span>
+      </a>
+      <a class="sf-item" href="https://numeriduel.com">
+        <span class="pip" style="background:#3730A3"></span> NumeriDuel
+      </a>
+      <a class="sf-item" href="https://boardduel.com">
+        <span class="pip" style="background:#7C3AED"></span> BoardDuel
+      </a>
+      <a class="sf-item" href="https://memoryduel.com">
+        <span class="pip" style="background:#EA580C"></span> MemoryDuel
+      </a>
+    </div>
+    <div class="sf-links">
+      <a href="/console/">Console</a>
+      <a href="/how-to-play/">How to play</a>
+      <a href="/about/">About</a>
+      <a href="/privacy/">Privacy</a>
+      <a href="/contact/">Contact</a>
+    </div>
+    <p class="sf-copy">© 2026 Duel Family · TeachDuel · No student identity data · 180-day retention</p>
+  </div>
+</footer>
 </body>
 </html>

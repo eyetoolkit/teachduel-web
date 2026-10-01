@@ -5,241 +5,233 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
 <meta name="theme-color" content="#0f766e">
-<title>TeachDuel — Teacher console for three classroom game sites</title>
-<meta name="description" content="TeachDuel: one console, three game sites (NumeriDuel · BoardDuel · MemoryDuel). Pick a game, create a room, share the code. Free, no signup, no student identity data.">
-<meta name="keywords" content="classroom games,teacher console,no signup,no student data,NumeriDuel,BoardDuel,MemoryDuel,free for teachers">
+<title>TeachDuel — Teacher console for NumeriDuel, BoardDuel, MemoryDuel</title>
+<meta name="description" content="One teacher console, three free classroom game sites. NumeriDuel for logic, BoardDuel for strategy, MemoryDuel for knowledge battles. No signup. No student identity data.">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="canonical" href="https://teachduel.com/">
 
-<!-- 字体与 token -->
+<!-- Duel Family 共享字体 + token（与 boardduel / memoryduel / numeriduel 同源） -->
 <link rel="stylesheet" href="/tokens-teach.css">
-<link rel="stylesheet" href="/assets/main-B4jAM15_.css">
+<link rel="stylesheet" href="/assets/main-BVSurd5P.css">
 
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="TeachDuel">
-<meta property="og:title" content="TeachDuel — Teacher console">
-<meta property="og:description" content="One console, three game sites. No signup. No student identity data.">
+<meta property="og:title" content="TeachDuel — Teacher console for the Duel Family">
+<meta property="og:description" content="Pick a game, create a room, share the code. Free. No signup. No student identity data.">
 <meta property="og:url" content="https://teachduel.com/">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="TeachDuel — Teacher console">
-<meta name="twitter:description" content="Three game sites, one teacher console. Free forever.">
+<meta name="twitter:description" content="Three game sites. One teacher console. Zero student identity data.">
 </head>
-<body>
+<body class="home-v3">
 
 <!-- ════════════════════════════════════════════════════════════════
-     Masthead（顶部报头）— 报纸感
+     Hero · 与 boardduel 完全同构（主色换 Teal）
      ════════════════════════════════════════════════════════════════ -->
-<header class="masthead">
-  <div class="masthead-row">
-    <a href="/" class="masthead-logo" aria-label="TeachDuel home">
-      <b>Teach</b><i>Duel</i>
-      <span class="masthead-tag">VOL.1 · Teacher Console</span>
-    </a>
-    <nav class="masthead-nav" aria-label="primary">
-      <a href="/console/">Console</a>
-      <a href="/how-to-play/">How to play</a>
-      <a href="/about/">About</a>
-      <a href="/privacy/">Privacy</a>
-      <a href="/contact/">Contact</a>
-    </nav>
-    <span class="masthead-meta">est. 2026 · Free forever</span>
-  </div>
-</header>
-
-<!-- ════════════════════════════════════════════════════════════════
-     Hero
-     ════════════════════════════════════════════════════════════════ -->
-<main>
+<main class="main">
   <section class="hero">
-    <p class="hero-kicker">Duel Family · Teacher Console</p>
-    <h1>One console for three free classroom game sites.</h1>
-    <p class="hero-lede">
-      Pick a game — NumeriDuel (logic), BoardDuel (strategy), or MemoryDuel (knowledge battle).
-      Generate a 6-character room code. Share it with the class.
-      Students enter on any phone, no login, no app. You see every answer in one console.
-    </p>
-
-    <!-- 房间码入口（教师邀请链接失效 / 学生无邀请链接时兜底） -->
-    <form class="code-form" id="codeForm" autocomplete="off">
-      <input type="text" id="codeInput" class="code-input" maxlength="8"
-             placeholder="ABC123" spellcheck="false" autocapitalize="characters"
-             aria-label="Room code">
-      <button type="submit" class="code-submit">Enter</button>
-    </form>
-    <p class="code-hint" id="codeHint" hidden></p>
-  </section>
-
-  <!-- ════════════════════════════════════════════════════════════════
-       SECTION 01 · Privacy commitments（4 条 · 编辑部 "§" 印章感）
-       ════════════════════════════════════════════════════════════════ -->
-  <div class="section-rule">
-    <span class="section-rule-tag"><b>§ 01</b> · What we don't collect</span>
-  </div>
-  <section class="section">
-    <h2 class="section-h">We are FERPA-light and GDPR-friendly by design.</h2>
-    <p class="section-lede">
-      Most classroom tools track students across the web. We don't. Here's the difference.
-    </p>
-    <div class="trust-grid">
-      <div class="trust-cell">
-        <span class="trust-mark">Names</span>
-        <h3 class="trust-h">No student names</h3>
-        <p class="trust-p">Students identify with anonymous codes like S07. We never see names, ever.</p>
-      </div>
-      <div class="trust-cell">
-        <span class="trust-mark">Contact</span>
-        <h3 class="trust-h">No emails or phones</h3>
-        <p class="trust-p">No signups for students. No parent emails. No notifications to anyone.</p>
-      </div>
-      <div class="trust-cell">
-        <span class="trust-mark">Tracking</span>
-        <h3 class="trust-h">No behavioral tracking</h3>
-        <p class="trust-p">No third-party cookies, no cross-site fingerprinting, no analytics IDs.</p>
-      </div>
-      <div class="trust-cell">
-        <span class="trust-mark">Retention</span>
-        <h3 class="trust-h">180-day auto-delete</h3>
-        <p class="trust-p">Records auto-delete after 180 days. Export or wipe anytime from the console.</p>
-      </div>
+    <h1>One console, three <em>free</em> classroom game sites.</h1>
+    <p class="sub">Pick a game. Generate a 6-character room code. Share it with the class.<br>Students enter on any phone, no login, no app, no email required.</p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="/console/">Open the Console</a>
+      <a class="btn btn-ghost" href="/how-to-play/">How to play</a>
+    </div>
+    <div class="chips">
+      <span class="chip"><span class="dot"></span> Free forever</span>
+      <span class="chip"><span class="dot"></span> No signup</span>
+      <span class="chip"><span class="dot"></span> No student identity data</span>
+      <span class="chip"><span class="dot"></span> 180-day auto-delete</span>
     </div>
   </section>
 
   <!-- ════════════════════════════════════════════════════════════════
-       SECTION 02 · Three game sites
+       Wall · Duel Family 三个游戏站 · 4 列网格（与 boardduel 同构）
        ════════════════════════════════════════════════════════════════ -->
-  <div class="section-rule">
-    <span class="section-rule-tag"><b>§ 02</b> · The three sites</span>
-  </div>
-  <section class="section">
-    <h2 class="section-h">Three sites, one console.</h2>
-    <p class="section-lede">
-      Each site has its own game library. The console aggregates class data across all three.
-    </p>
-    <div class="site-grid">
-      <a class="site-card site-numeri" href="/console/?site=numeri&action=assign">
-        <span class="site-card-mark">/games · logic · ages 6+</span>
-        <h3>NumeriDuel</h3>
-        <span class="site-color">#3730A3 · 5 games</span>
-        <p>Sudoku 4×4 / 6×6 / 9×9, 24-point arithmetic, equation pyramid. Wrong-answer heat maps show what each class is missing.</p>
-        <span class="site-go">Open room →</span>
+  <section class="wall">
+    <div class="wall-grid">
+      <a class="gcard" href="https://numeriduel.com" target="_blank" rel="noopener">
+        <div class="gcard-art">
+          <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg" aria-label="NumeriDuel">
+            <rect width="80" height="80" fill="#3730A3"/>
+            <text x="40" y="50" text-anchor="middle" font-family="Space Grotesk,sans-serif" font-weight="700" font-size="36" fill="#fff">24</text>
+            <text x="40" y="68" text-anchor="middle" font-family="Space Grotesk,sans-serif" font-weight="700" font-size="11" fill="#fff" opacity=".85">point</text>
+          </svg>
+        </div>
+        <div class="gcard-body">
+          <div class="gcard-name">NumeriDuel</div>
+          <div class="gcard-tags"><i>logic</i><i>5 games</i></div>
+        </div>
       </a>
-      <a class="site-card site-board" href="/console/?site=board&action=assign">
-        <span class="site-card-mark">/games · strategy · ages 7+</span>
-        <h3>BoardDuel</h3>
-        <span class="site-color">#7C3AED · 5 games</span>
-        <p>Chess, Gomoku, Connect 4, Reversi, Tic-Tac-Toe. Turn-based — works on a single shared classroom screen.</p>
-        <span class="site-go">Open room →</span>
+      <a class="gcard" href="https://boardduel.com" target="_blank" rel="noopener">
+        <div class="gcard-art">
+          <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg" aria-label="BoardDuel">
+            <rect width="80" height="80" fill="#7C3AED"/>
+            <g fill="#fff">
+              <rect x="14" y="14" width="14" height="14"/>
+              <rect x="52" y="14" width="14" height="14" opacity=".75"/>
+              <rect x="14" y="52" width="14" height="14" opacity=".75"/>
+              <rect x="52" y="52" width="14" height="14"/>
+            </g>
+          </svg>
+        </div>
+        <div class="gcard-body">
+          <div class="gcard-name">BoardDuel</div>
+          <div class="gcard-tags"><i>strategy</i><i>5 games</i></div>
+        </div>
       </a>
-      <a class="site-card site-memory" href="/console/?site=memory&action=assign">
-        <span class="site-card-mark">/games · knowledge · ages 10+</span>
-        <h3>MemoryDuel</h3>
-        <span class="site-color">#EA580C · 1 game · 12 categories</span>
-        <p>Vocabulary, history, science. 10 questions · 15-second countdown · pass threshold 60%. Six languages.</p>
-        <span class="site-go">Open room →</span>
+      <a class="gcard" href="https://memoryduel.com" target="_blank" rel="noopener">
+        <div class="gcard-art">
+          <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg" aria-label="MemoryDuel">
+            <rect width="80" height="80" fill="#EA580C"/>
+            <text x="40" y="50" text-anchor="middle" font-family="Space Grotesk,sans-serif" font-weight="700" font-size="36" fill="#fff">Q</text>
+            <text x="40" y="68" text-anchor="middle" font-family="Space Grotesk,sans-serif" font-weight="700" font-size="11" fill="#fff" opacity=".85">battle</text>
+          </svg>
+        </div>
+        <div class="gcard-body">
+          <div class="gcard-name">MemoryDuel</div>
+          <div class="gcard-tags"><i>knowledge</i><i>12 cats</i></div>
+        </div>
+      </a>
+      <a class="gcard" href="/console/" style="border-color: var(--brand); background: var(--card-line);">
+        <div class="gcard-art">
+          <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg" aria-label="Teacher Console">
+            <rect width="80" height="80" fill="#0F766E"/>
+            <text x="40" y="48" text-anchor="middle" font-family="Space Grotesk,sans-serif" font-weight="700" font-size="14" fill="#fff">Console</text>
+            <text x="40" y="66" text-anchor="middle" font-family="Space Grotesk,sans-serif" font-weight="700" font-size="10" fill="#fff" opacity=".85">your class</text>
+          </svg>
+        </div>
+        <div class="gcard-body">
+          <div class="gcard-name">TeachDuel</div>
+          <div class="gcard-tags"><i>teacher</i><i>console</i></div>
+        </div>
       </a>
     </div>
   </section>
 
   <!-- ════════════════════════════════════════════════════════════════
-       SECTION 03 · How it works（3 步 · 不用 emoji）
+       Duo · 左：3-step how-to · 右：FAQ（与 boardduel 同样板）
        ════════════════════════════════════════════════════════════════ -->
-  <div class="section-rule">
-    <span class="section-rule-tag"><b>§ 03</b> · How it works</span>
-  </div>
-  <section class="section">
-    <h2 class="section-h">Start a class in under 30 seconds.</h2>
-    <div class="steps">
-      <div class="step">
-        <span class="step-num">STEP 01</span>
-        <h3 class="step-h">Pick a game</h3>
-        <p class="step-p">Open the Console. Choose one of 11 games across three sites. Set class size, time limit, and difficulty — or leave defaults.</p>
+  <section class="duo">
+    <div class="panel panel-daily">
+      <div class="panel-head">
+        <h2 class="panel-title">Start a class in <span class="cal">3 steps</span></h2>
+        <span class="panel-meta">≈ 30 seconds</span>
       </div>
-      <div class="step">
-        <span class="step-num">STEP 02</span>
-        <h3 class="step-h">Generate room code</h3>
-        <p class="step-p">One click generates a 6-character code (e.g. ABC123). Copy the link or scan the QR — both work.</p>
+      <div class="daily-tiles">
+        <div class="dtile">
+          <div class="num">1</div>
+          <span>Pick game</span>
+        </div>
+        <div class="dtile">
+          <div class="num">2</div>
+          <span>Get code</span>
+        </div>
+        <div class="dtile">
+          <div class="num">3</div>
+          <span>Students join</span>
+        </div>
+        <div class="dtile">
+          <div class="num">✓</div>
+          <span>Track</span>
+        </div>
       </div>
-      <div class="step">
-        <span class="step-num">STEP 03</span>
-        <h3 class="step-h">Students enter code</h3>
-        <p class="step-p">Students open the matching site, enter the code, pick their own anonymous handle (S01, S02…). Play begins immediately.</p>
+      <p class="daily-msg">11 games across three sites. The console aggregates <span class="cd">per-student accuracy</span> in real time — see who's done, who's stuck, which round tripped up the class.</p>
+    </div>
+    <div class="panel">
+      <div class="panel-head">
+        <h2 class="panel-title">Things teachers ask</h2>
+        <span class="panel-meta">6 quick answers</span>
       </div>
+      <ul class="weekly-rows" style="list-style: none; padding: 0; margin: 0;">
+        <li class="wrow">
+          <span class="rk">Q</span>
+          <span class="nm">Install anything?</span>
+          <span class="pt">No</span>
+        </li>
+        <li class="wrow">
+          <span class="rk">Q</span>
+          <span class="nm">Student data collected?</span>
+          <span class="pt">Codes only</span>
+        </li>
+        <li class="wrow">
+          <span class="rk">Q</span>
+          <span class="nm">Track per-student?</span>
+          <span class="pt">Yes</span>
+        </li>
+        <li class="wrow">
+          <span class="rk">Q</span>
+          <span class="nm">Shared devices?</span>
+          <span class="pt">Pick new code</span>
+        </li>
+        <li class="wrow">
+          <span class="rk">Q</span>
+          <span class="nm">Slow Wi-Fi?</span>
+          <span class="pt">100 KB bundles</span>
+        </li>
+        <li class="wrow me">
+          <span class="rk">Q</span>
+          <span class="nm">5-min class?</span>
+          <span class="pt">MemoryDuel</span>
+        </li>
+      </ul>
+      <a class="btn-exchange" href="/how-to-play/" style="margin-top: 12px;">Read the full FAQ</a>
     </div>
   </section>
 
   <!-- ════════════════════════════════════════════════════════════════
-       SECTION 04 · FAQ
+       Why · 暗紫卡 + radial glow（与 boardduel 同构，色换 Teal）
        ════════════════════════════════════════════════════════════════ -->
-  <div class="section-rule">
-    <span class="section-rule-tag"><b>§ 04</b> · Common questions</span>
-  </div>
-  <section class="section">
-    <h2 class="section-h">Things teachers ask first.</h2>
-    <div class="faq-list">
-      <details class="faq-item">
-        <summary class="faq-q">Do I need to install anything?</summary>
-        <p class="faq-a">No. Students open the game site on any phone or laptop browser, enter their code, and play. Teachers use the same web console — no app, no extension, no IT involvement.</p>
-      </details>
-      <details class="faq-item">
-        <summary class="faq-q">What data do you collect from students?</summary>
-        <p class="faq-a">Only their anonymous class code (e.g. S07) and per-question answers. We never see their name, email, school ID, IP, or device fingerprint. See the full <a href="/privacy/">Privacy page</a>.</p>
-      </details>
-      <details class="faq-item">
-        <summary class="faq-q">Can I see what each student answered?</summary>
-        <p class="faq-a">Yes. The Overview tab shows per-student accuracy and per-question mastery. Drill into "Class weak spot" to find which round trips up the class. Reteach buttons auto-generate a follow-up assignment.</p>
-      </details>
-      <details class="faq-item">
-        <summary class="faq-q">What about students who share devices?</summary>
-        <p class="faq-a">Each student picks their own code when joining. Codes are remembered on the same device for the next session — no per-student account needed.</p>
-      </details>
-      <details class="faq-item">
-        <summary class="faq-q">Does it work on slow school Wi-Fi?</summary>
-        <p class="faq-a">Yes. Game bundles are under 100 KB. Server responses are cached at the edge. Students on 3G-class networks can play without stalls.</p>
-      </details>
-      <details class="faq-item">
-        <summary class="faq-q">What if my class only has 5 minutes?</summary>
-        <p class="faq-a">MemoryDuel's Knowledge Battle fits in 5 minutes flat: 10 questions × 15 seconds. Tic-Tac-Toe rounds are 30 seconds each. Pick short rounds and you're covered.</p>
-      </details>
+  <section class="why">
+    <div class="why-card">
+      <span class="why-eyebrow">WHY TEACHDUEL</span>
+      <h2 class="why-title">Classroom games, without the surveillance.</h2>
+      <p class="why-lead">Most ed-tech tracks students across the web. We don't. <b>No names, no emails, no IDs, no fingerprinting</b>. Students enter with self-chosen codes (S07, DOG-EARS, anything). Records auto-delete after 180 days. Free forever, no premium tier, no upsells.</p>
+      <div class="why-grid">
+        <div><b>FERPA-light</b><span>US school-friendly by default. No school IDs requested.</span></div>
+        <div><b>GDPR-ready</b><span>EU data residency. Access & erasure via email.</span></div>
+        <div><b>180-day retention</b><span>Auto-delete. Export or wipe anytime.</span></div>
+        <div><b>Open console</b><span>Use without an account. Anonymous teacher ID.</span></div>
+      </div>
     </div>
   </section>
 </main>
 
 <!-- ════════════════════════════════════════════════════════════════
-     Footer Masthead
+     Footer · Duel Family 矩阵（与 boardduel 同构）
      ════════════════════════════════════════════════════════════════ -->
-<footer class="footer">
-  <div class="footer-row">
-    <div>
-      <div class="footer-brand">TeachDuel</div>
-      <div class="footer-tag">Free teacher console · est. 2026</div>
+<footer class="site-footer">
+  <div class="wrap" style="padding-bottom: 4px;">
+    <h3 class="sf-title">Duel Family</h3>
+    <div class="sf-matrix">
+      <a class="sf-item current" href="/">
+        <span class="pip" style="background:#0F766E"></span>
+        TeachDuel
+        <span style="font-size:.72rem; font-weight:400; opacity:.7;">· Teacher Console</span>
+      </a>
+      <a class="sf-item" href="https://numeriduel.com">
+        <span class="pip" style="background:#3730A3"></span>
+        NumeriDuel
+        <span style="font-size:.72rem; font-weight:400; opacity:.7;">· 5 logic games</span>
+      </a>
+      <a class="sf-item" href="https://boardduel.com">
+        <span class="pip" style="background:#7C3AED"></span>
+        BoardDuel
+        <span style="font-size:.72rem; font-weight:400; opacity:.7;">· 5 strategy games</span>
+      </a>
+      <a class="sf-item" href="https://memoryduel.com">
+        <span class="pip" style="background:#EA580C"></span>
+        MemoryDuel
+        <span style="font-size:.72rem; font-weight:400; opacity:.7;">· knowledge battle</span>
+      </a>
     </div>
-    <div>
-      <h4>Sites</h4>
-      <ul class="footer-list">
-        <li><a href="https://numeriduel.com">NumeriDuel</a></li>
-        <li><a href="https://boardduel.com">BoardDuel</a></li>
-        <li><a href="https://memoryduel.com">MemoryDuel</a></li>
-      </ul>
+    <div class="sf-links">
+      <a href="/console/">Console</a>
+      <a href="/how-to-play/">How to play</a>
+      <a href="/about/">About</a>
+      <a href="/privacy/">Privacy</a>
+      <a href="/contact/">Contact</a>
     </div>
-    <div>
-      <h4>Console</h4>
-      <ul class="footer-list">
-        <li><a href="/console/">Open console</a></li>
-        <li><a href="/how-to-play/">How to play</a></li>
-        <li><a href="/about/">About</a></li>
-      </ul>
-    </div>
-    <div>
-      <h4>Legal</h4>
-      <ul class="footer-list">
-        <li><a href="/privacy/">Privacy</a></li>
-        <li><a href="/contact/">Contact</a></li>
-      </ul>
-    </div>
-  </div>
-  <div class="footer-legal">
-    <span>© 2026 TeachDuel · Duel Family</span>
-    <span>No signup · No student identity data · 180-day retention</span>
+    <p class="sf-copy">© 2026 Duel Family · TeachDuel · No student identity data · 180-day retention</p>
   </div>
 </footer>
 
