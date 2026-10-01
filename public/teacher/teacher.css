@@ -120,6 +120,11 @@ tr:last-child td{border-bottom:0}
 .compliance b{color:var(--ink)}
 
 .toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;font-weight:600;font-size:.9rem;padding:12px 22px;border-radius:999px;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;z-index:9;box-shadow:0 10px 30px rgba(16,20,42,.35)}
+
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:16px}
+.grid2 h3{font-size:.92rem;color:var(--teal);margin:0 0 6px}
+.grid2 ul{font-size:.85rem;line-height:1.6}
+@media (max-width:720px){.grid2{grid-template-columns:1fr}}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
 /* auth overlay (minimal — magic link) */

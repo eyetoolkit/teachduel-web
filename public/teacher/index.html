@@ -35,6 +35,7 @@
       <button class="tab on" id="tabOver" role="tab" aria-selected="true" data-i18n="tn.tab_over">Overview</button>
       <button class="tab" id="tabAssign" role="tab" aria-selected="false" data-i18n="tn.tab_assign">Assign</button>
       <button class="tab" id="tabBoard" role="tab" aria-selected="false" data-i18n="tn.tab_board">Board</button>
+      <button class="tab" id="tabPrivacy" role="tab" aria-selected="false" data-i18n="tn.tab_privacy">Privacy</button>
     </div>
 
     <!-- OVERVIEW -->
@@ -160,6 +161,47 @@
         <strong>🧠 MemoryDuel · 12 categories · 6 languages</strong>
         <span data-i18n="tn.cross_md">1v1 knowledge duels for vocabulary / history / science classrooms</span>
       </a>
+    </div>
+
+    <!-- PRIVACY (M3 2026-10-01)：差异化承诺落地为可见 UI -->
+    <div id="viewPrivacy" style="display:none">
+      <div class="card">
+        <h2 style="margin:0 0 8px;font-size:1.15rem" data-i18n="tn.priv_h2">Privacy we promise</h2>
+        <p class="mini" style="margin:0 0 16px" data-i18n="tn.priv_lead">
+          We are FERPA-light & GDPR-friendly by design — the simplest privacy posture in classroom games.
+        </p>
+
+        <div class="grid2">
+          <div>
+            <h3 style="font-size:.92rem;color:var(--teal);margin:0 0 6px" data-i18n="tn.priv_what_we_dont">What we DON'T collect</h3>
+            <ul class="priv-list" style="list-style:none;padding:0;margin:0;font-size:.85rem;line-height:1.6">
+              <li>❌ Student names</li>
+              <li>❌ Student emails / phones</li>
+              <li>❌ Student IDs (school ID, gov ID, SSN)</li>
+              <li>❌ IP addresses (logged only for rate-limit, not stored beyond session)</li>
+              <li>❌ Behavioral tracking / cross-site cookies</li>
+            </ul>
+          </div>
+          <div>
+            <h3 style="font-size:.92rem;color:var(--teal);margin:0 0 6px" data-i18n="tn.priv_what_we_collect">What we DO collect</h3>
+            <ul class="priv-list" style="list-style:none;padding:0;margin:0;font-size:.85rem;line-height:1.6">
+              <li>✓ Anonymous class codes (e.g. S07)</li>
+              <li>✓ Per-question solved/duration (no PII)</li>
+              <li>✓ Teacher account email (if you signed up)</li>
+              <li>✓ Auto-deleted after 180 days (180-day retention)</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="acts" style="margin-top:20px">
+          <button class="prim" id="exportBtn" data-i18n="tn.priv_export">⬇ Export my data (JSON)</button>
+          <button class="copy" id="deleteBtn" style="background:var(--red);color:#fff;border-color:var(--red)" data-i18n="tn.priv_delete">🗑 Delete my account & data</button>
+        </div>
+
+        <p class="note" style="margin-top:18px" data-i18n="tn.priv_legal">
+          Our full privacy policy lives at <a href="/privacy/" target="_blank" rel="noopener">/privacy/</a>. EU / GDPR users: we never transfer data outside EU for processing.
+        </p>
+      </div>
     </div>
   </section>
 </main>

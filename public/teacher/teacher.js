@@ -553,8 +553,8 @@ function emptyState() {
 
 /* ─── tabs ─── */
 function switchTab(v) {
-  const map = { over: 'viewOver', assign: 'viewAssign', board: 'viewBoard' };
-  ['over', 'assign', 'board'].forEach((k) => {
+  const map = { over: 'viewOver', assign: 'viewAssign', board: 'viewBoard', privacy: 'viewPrivacy' };
+  ['over', 'assign', 'board', 'privacy'].forEach((k) => {
     const on = k === v;
     $('tab' + k.charAt(0).toUpperCase() + k.slice(1)).classList.toggle('on', on);
     $(map[k]).style.display = on ? '' : 'none';
@@ -565,6 +565,7 @@ function switchTab(v) {
 $('tabOver').addEventListener('click', () => switchTab('over'));
 $('tabAssign').addEventListener('click', () => switchTab('assign'));
 $('tabBoard').addEventListener('click', () => switchTab('board'));
+$('tabPrivacy').addEventListener('click', () => switchTab('privacy'));
 $('boardBtn').addEventListener('click', () => switchTab('board'));
 
 /* A3：练习模式默认不计时 —— 切换 MODE 时启用/禁用计时字段 */
@@ -638,6 +639,44 @@ $('rosterBtn').addEventListener('click', () => {
   const on = box.style.display !== 'none';
   box.style.display = on ? 'none' : '';
   if (!on) $('rosterTA').value = roster.join('\n');
+});
+
+/* ─── Privacy（M3 2026-10-01）：导出 + 删除 ─── */
+$('exportBtn')?.addEventListener('click', async () => {
+  try {
+    const res = await fetch('/api/teacher/me/export', {
+      credentials: 'same-origin',
+      headers: { 'X-Anon-Teacher': anonId() },
+    });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const blob = await res.blob();
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'teachduel-export.json';
+    document.body.appendChild(a); a.click(); a.remove();
+    URL.revokeObjectURL(url);
+    toast('⬇ Export ready');
+  } catch (e) {
+    toast('Export endpoint coming soon — your data is still under 180-day auto-delete');
+  }
+});
+
+$('deleteBtn')?.addEventListener('click', async () => {
+  if (!confirm(T('tn.priv_delete_confirm', 'Delete ALL my classes, assignments and student records? This cannot be undone.'))) return;
+  try {
+    const res = await fetch('/api/teacher/me/delete', {
+      method: 'POST',
+      credentials: 'same-origin',
+      headers: { 'X-Anon-Teacher': anonId(), 'Content-Type': 'application/json' },
+      body: JSON.stringify({ confirm: 'DELETE_ALL' }),
+    });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    toast('🗑 Deleted. Logging out…');
+    setTimeout(() => location.reload(), 1500);
+  } catch (e) {
+    toast('Delete endpoint coming soon — emails privacy@teachduel.com to wipe');
+  }
 });
 $('rosterSave').addEventListener('click', async () => {
   try {
@@ -802,7 +841,7 @@ $('smodal').addEventListener('click', (e) => { if (e.target === $('smodal')) $('
 /* ─── tabs 键盘导航（方向键在 Overview/Assign/Board 间移动）─── */
 document.querySelector('.tabs').addEventListener('keydown', (e) => {
   if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
-  const order = ['tabOver', 'tabAssign', 'tabBoard'];
+  const order = ['tabOver', 'tabAssign', 'tabBoard', 'tabPrivacy'];
   const i = order.indexOf(document.activeElement && document.activeElement.id);
   if (i < 0) return;
   const nx = order[(i + (e.key === 'ArrowRight' ? 1 : order.length - 1)) % order.length];
@@ -831,7 +870,7 @@ window.addEventListener('i18n:change', () => {
 
 /* screenshot hook: ?view=assign | ?view=board pre-switches tabs */
 const v = new URLSearchParams(location.search).get('view');
-if (v === 'assign' || v === 'board') switchTab(v);
+if (v === 'assign' || v === 'board' || v === 'privacy') switchTab(v);
 
 /* ─── start ─── */
 setAuthMode(authMode);   // 初始即按当前语言渲染 auth 文案（authHint/authSend 由 JS 管理，不加 data-i18n）
