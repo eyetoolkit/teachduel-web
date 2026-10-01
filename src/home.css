@@ -359,3 +359,4 @@ html[data-theme="dark"] body.home-v3 .wrow.me { color: var(--brand-bright); }
 .home-v3 .hero-try b { color: var(--paper); }
 @media (max-width: 979px) { .home-v3 .flow-steps { grid-template-columns: repeat(3, 1fr); } }
 @media (max-width: 639px) { .home-v3 .flow-steps { grid-template-columns: repeat(2, 1fr); } }
+/* deploy touch 2026-10-01 — force full CF Pages rebuild so .flow styles ship with the new landing HTML */
