@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" data-site="teach">
+<head>
+<script>window.__I18N_CONFIG__={supported:["en","zh","ja","es","fr","de"],dictVersion:1,fallback:"en"};</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<meta name="theme-color" content="#0f766e">
+<title>About — TeachDuel</title>
+<meta name="description" content="TeachDuel: a free teacher console that brings three classroom game sites (NumeriDuel, BoardDuel, MemoryDuel) under one privacy-respecting roof.">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="canonical" href="https://teachduel.com/about/">
+<link rel="stylesheet" href="/tokens-teach.css">
+<style>
+/* 共享子页样式：与首页共用 tokens-teach.css，仅写结构 + 微调 */
+* { box-sizing: border-box; }
+html, body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  line-height: var(--lh-base);
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; text-decoration: none; }
+.masthead {
+  border-bottom: 3px double var(--rule);
+  padding: 14px 24px 18px;
+}
+.masthead-row {
+  display: flex; justify-content: space-between; align-items: center;
+  max-width: var(--measure-wide); margin: 0 auto; gap: 24px;
+}
+.masthead-logo b { font-weight: 700; font-size: 1.5rem; letter-spacing: -0.02em; color: var(--ink); }
+.masthead-logo i { font-style: normal; font-weight: 400; font-size: 1.5rem; color: var(--accent); }
+.masthead-nav { display: flex; gap: 24px; font-family: var(--font-mono); font-size: var(--fs-xs); letter-spacing: 0.06em; text-transform: uppercase; color: var(--mute); }
+.masthead-nav a { border-bottom: 1px solid transparent; padding-bottom: 2px; transition: border-color var(--dur-fast); }
+.masthead-nav a:hover { color: var(--ink); border-bottom-color: var(--accent); }
+.masthead-nav a[aria-current="page"] { color: var(--ink); border-bottom-color: var(--accent); }
+.section-rule { display: flex; align-items: center; gap: 14px; max-width: var(--measure-wide); margin: 64px auto 40px; padding: 0 24px; }
+.section-rule::before, .section-rule::after { content: ""; flex: 1; height: 1px; background: var(--rule); }
+.section-rule-tag { font-family: var(--font-mono); font-size: var(--fs-xs); letter-spacing: 0.18em; text-transform: uppercase; color: var(--mute); }
+.section-rule-tag b { color: var(--ink); font-weight: 700; }
+.section { max-width: var(--measure-wide); margin: 0 auto; padding: 0 24px 80px; }
+.section h1 { font-weight: 700; font-size: clamp(2rem, 5vw, 3.6rem); letter-spacing: -0.025em; line-height: var(--lh-tight); margin: 0 0 24px; max-width: 22ch; }
+.section h2 { font-weight: 700; font-size: 1.5rem; letter-spacing: -0.015em; margin: 48px 0 12px; }
+.section p, .section li { font-size: 1rem; max-width: 64ch; line-height: var(--lh-base); color: var(--ink); }
+.section p { color: var(--mute); margin: 0 0 16px; }
+.section .lede { font-size: 1.18rem; color: var(--mute); line-height: var(--lh-snug); max-width: 56ch; }
+.section a { color: var(--ink); border-bottom: 1px solid var(--accent); }
+.section a:hover { color: var(--accent); }
+.section ul { margin: 0 0 16px; padding-left: 1.4em; }
+.section li { color: var(--mute); margin-bottom: 8px; }
+.section li b { color: var(--ink); }
+.faq-link { display: inline-block; padding: 10px 14px; border: 1px solid var(--rule); border-radius: var(--r-md); font-family: var(--font-mono); font-size: var(--fs-xs); letter-spacing: 0.08em; text-transform: uppercase; margin-top: 8px; transition: border-color var(--dur-fast); }
+.faq-link:hover { border-color: var(--accent); }
+@media (max-width: 720px) { .masthead-nav { display: none; } }
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="masthead-row">
+    <a href="/" class="masthead-logo"><b>Teach</b><i>Duel</i></a>
+    <nav class="masthead-nav">
+      <a href="/console/">Console</a>
+      <a href="/how-to-play/">How to play</a>
+      <a href="/about/" aria-current="page">About</a>
+      <a href="/privacy/">Privacy</a>
+      <a href="/contact/">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="section-rule"><span class="section-rule-tag"><b>§ ABOUT</b> · Why we exist</span></div>
+  <section class="section">
+    <h1>One console, three sites, zero student identity data.</h1>
+    <p class="lede">TeachDuel started as a single math game for a single classroom. Then teachers asked for board games. Then for knowledge quizzes. Today, three sites share one console — and one promise: <b>no student is ever identified to us</b>.</p>
+
+    <h2>What we mean by "no student identity"</h2>
+    <p>Students enter classrooms using codes they pick themselves — <b>S07</b>, <b>DOG-EARS</b>, anything. Those codes are stored locally in each browser. Teachers see them. We do not. We never see names, emails, school IDs, IP addresses, or behavioral fingerprints.</p>
+
+    <h2>Why three sites in one console?</h2>
+    <ul>
+      <li><b>NumeriDuel</b> — logic, math, sudoku. Five games.</li>
+      <li><b>BoardDuel</b> — strategy, board games. Five games.</li>
+      <li><b>MemoryDuel</b> — vocabulary, history, science. Six languages.</li>
+    </ul>
+    <p>Teachers don't want three dashboards. They want one room-code flow that works anywhere. The console aggregates results across all three sites so a single "Class weak spot" view shows where each student is stuck — math, strategy, or recall.</p>
+
+    <h2>What we won't do</h2>
+    <ul>
+      <li>No ads. No third-party trackers. No cross-site fingerprinting.</li>
+      <li>No "premium" tier that gates basic features. Free forever.</li>
+      <li>No behavioral advertising. No data sharing with third parties.</li>
+      <li>No AI risk-scoring of students (rejected by design — see our <a href="/privacy/">privacy page</a>).</li>
+    </ul>
+
+    <h2>Built by</h2>
+    <p>TeachDuel is a small studio. We make classroom games because we think the next generation of educational software should default to <i>collect less</i>, not more.</p>
+
+    <a href="/console/" class="faq-link">→ Open the Console</a>
+  </section>
+</main>
+
+</body>
+</html>

@@ -1,25 +1,55 @@
-/* ============ 品牌阶梯 · TeachDuel Teal ============
-   主色 #0F766E（teal-700，色相 175°）
-   色相距离：vs boardduel Violet 262° = 87°
-             vs numeriduel Indigo 243° = 68°
-             vs memoryduel Orange  21° = 154°
-   → 最小 68°，四站一眼可区分
+/* ════════════════════════════════════════════════════════════════
+   TeachDuel · Editorial Masthead Design Tokens (v2 · 2026-10-01)
+   ────────────────────────────────────────────────────────────────
+   视觉方向："Editorial Masthead"——报纸报头感 / Stripe Docs 克制 /
+   Bloomberg Terminal 数据时刻。不走 SaaS 教育模板暖奶油+衬线套路。
 
-   ⚠️ 注意：--brand 指向 700 而不是 600。
-      teal-600 #0D9488 的白字对比度只有 3.7:1，不达 WCAG AA；
-      teal-700 #0F766E 是 5.5:1。这是 Teal 色系明度特性决定的，不是笔误。
-*/
+   字体（自托管，font-src 'self' CSP 兼容）：
+     · Space Grotesk 400/700 —— 主字（标题 / 正文 / 按钮）
+     · JetBrains Mono 500/700 —— 数字 / 房间码 / 字段名
 
+   配色（6 个 token）：
+     · --ink     #0a0e14  —— 主文字（接近全黑，留 6% 暖）
+     · --paper   #fbf9f3  —— 主背景（暖白纸，非纯白）
+     · --accent  #0f766e  —— Teal "编辑部印章"（仅 CTA / active / 强调）
+     · --soft    #e8e2d4  —— 卡片纸边 / 磨损色
+     · --mute    #5a5761  —— 次要文字
+     · --rule    #1a1f29  —— 深分隔线
+
+   ⚠️ --accent 仅在 CTA / active 状态 / "需要你的注意" 使用。
+      禁用做大背景墙、禁用做按钮阴影发光、禁用做卡面色块。
+      Teal 出现 1-2 处即够，多了 = SaaS 套路。
+   ════════════════════════════════════════════════════════════════ */
+
+/* ========== 自托管字体 (font-src 'self' CSP 兼容) ========== */
+@font-face {
+  font-family: 'Space Grotesk'; font-style: normal; font-weight: 400;
+  font-display: swap; src: url('/fonts/space-grotesk-latin-400.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Space Grotesk'; font-style: normal; font-weight: 700;
+  font-display: swap; src: url('/fonts/space-grotesk-latin-700.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'JetBrains Mono'; font-style: normal; font-weight: 500;
+  font-display: swap; src: url('/fonts/jetbrains-mono-latin-500.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'JetBrains Mono'; font-style: normal; font-weight: 700;
+  font-display: swap; src: url('/fonts/jetbrains-mono-latin-700.woff2') format('woff2');
+}
+
+/* ========== TeachDuel Teal 阶梯（保留 Duel-DS 兼容别名） ========== */
 html[data-site="teach"] {
-  --brand-50:  #F0FDFA;    /* 极浅底 */
-  --brand-100: #CCFBF1;    /* hover 底 */
+  --brand-50:  #F0FDFA;
+  --brand-100: #CCFBF1;
   --brand-200: #99F6E4;
   --brand-400: #2DD4BF;
   --brand-500: #14B8A6;
   --brand-600: #0D9488;
-  --brand-700: #0F766E;    /* 主色 —— Teal（白字 5.5:1） */
-  --brand-800: #115E59;    /* hover（白字 7.6:1） */
-  --brand-900: #134E4A;    /* active */
+  --brand-700: #0F766E;
+  --brand-800: #115E59;
+  --brand-900: #134E4A;
   --brand:        var(--brand-700);
   --brand-hover:  var(--brand-800);
   --brand-active: var(--brand-900);
@@ -27,18 +57,72 @@ html[data-site="teach"] {
   --brand-ring:   rgba(15, 118, 110, 0.35);
   --brand-text:   #115E59;
   --hero-g:       linear-gradient(135deg, #115E59 0%, #0F766E 100%);
-}
 
-/* ============ teachduel 教师端 UI 变体 ============
-   比游戏端更克制：降圆角、缩按钮、去装饰、减动效、标题换 Inter。
-   只需覆盖变量，组件层一行不改。
-*/
+  /* ========== Editorial Masthead 6 Token ========== */
+  --ink:     #0a0e14;          /* 主文字（接近全黑，留 6% 暖） */
+  --paper:   #fbf9f3;          /* 主背景（暖白纸，非纯白） */
+  --accent:  #0f766e;          /* Teal "编辑部印章"（一处即够） */
+  --soft:    #e8e2d4;          /* 卡片纸边 / 磨损色 */
+  --mute:    #5a5761;          /* 次要文字 */
+  --rule:    #1a1f29;          /* 深分隔线 */
 
-html[data-site="teach"] {
-  --radius-card:    8px;     /* 游戏端 12px —— 从圆润向锐利过渡 */
-  --btn-h:          44px;    /* 游戏端 48px —— 教师端桌面/投影为主 */
-  --dur:            150ms;   /* 游戏端更丰富，教师端只用于引导注意力 */
-  --font-display:   "Inter", system-ui, sans-serif;  /* 游戏端 Space Grotesk */
-  --hero-grid:      none;    /* 去掉装饰性网格 */
-  --hero-glow:      0.5;     /* 光晕强度下调 */
+  /* ========== 字体角色 ========== */
+  --font-display: "Space Grotesk", system-ui, -apple-system, sans-serif;
+  --font-body:    "Space Grotesk", system-ui, -apple-system, sans-serif;
+  --font-mono:    "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
+  --font-serif:   "Space Grotesk", system-ui, sans-serif;  /* 不用衬线（与教育模板区分） */
+
+  /* ========== 排版比例（golden-ish） ========== */
+  --fs-xs:   0.78rem;
+  --fs-sm:   0.875rem;
+  --fs-base: 1rem;
+  --fs-lg:   1.18rem;
+  --fs-xl:   1.5rem;
+  --fs-2xl:  2.1rem;
+  --fs-3xl:  3rem;
+  --fs-4xl:  4.2rem;
+
+  /* ========== 节奏 ========== */
+  --rhythm-xs:  4px;
+  --rhythm-sm:  8px;
+  --rhythm:    16px;
+  --rhythm-md: 24px;
+  --rhythm-lg: 40px;
+  --rhythm-xl: 64px;
+  --rhythm-2xl: 96px;
+
+  /* ========== 圆角（统一尖锐） ========== */
+  --r-0:   0;
+  --r-sm:  2px;
+  --r-md:  4px;
+  --r-lg:  6px;
+  --r-pill: 999px;
+
+  /* ========== 边框（细而明确） ========== */
+  --border-thin:    1px solid var(--rule);
+  --border-soft:    1px solid var(--soft);
+  --border-accent:  1px solid var(--accent);
+
+  /* ========== 阴影（只用 stamp） ========== */
+  --shadow-none: none;
+  --shadow-stamp: 0 0 0 1px var(--accent);  /* 像编辑部红印章 */
+
+  /* ========== 行宽 ========== */
+  --measure: 68ch;
+  --measure-wide: 90ch;
+
+  /* ========== 行高 ========== */
+  --lh-tight: 1.15;
+  --lh-snug:  1.4;
+  --lh-base:  1.6;
+  --lh-loose: 1.8;
+
+  /* ========== 时长（动效只用 hover / details 展开） ========== */
+  --dur-instant: 60ms;
+  --dur-fast:    150ms;
+  --dur:         200ms;
+
+  /* ========== 锐利（去圆角） ========== */
+  --radius-card: 4px;
+  --btn-h:       44px;
 }
