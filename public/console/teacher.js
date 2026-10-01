@@ -692,6 +692,84 @@ $('rosterSave').addEventListener('click', async () => {
 });
 
 /* ─── assignment generation：房间码来自服务端 ─── */
+
+
+/* ════════════ M4-P0 Use my bank 开关（2026-10-01）══════════════
+   注入"Use my question bank"复选框 + bankId 分支 */
+let assignUseBank = false;
+
+async function setupBankToggle() {
+  const fGame = document.getElementById('fGame');
+  if (!fGame || document.getElementById('fUseBank')) return;
+  const formRow = fGame.closest('.fld');
+  if (!formRow) return;
+  const wrap = document.createElement('div');
+  wrap.style.cssText = 'grid-column:1/-1;margin:0 0 10px;padding:8px 12px;background:#1a3d4a;border-radius:8px;border:1px solid #26546a;';
+  wrap.innerHTML = `
+    <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:.92rem;color:#c0d4d8">
+      <input type="checkbox" id="fUseBank" style="width:16px;height:16px;cursor:pointer;accent-color:#0fb5a8">
+      <span><b style="color:#fff">Use my question bank</b> <span style="color:#9fbcc8">(CSV-uploaded, P0 student play)</span></span>
+    </label>
+    <div id="bankPicker" style="display:none;margin-top:8px">
+      <select id="fBankId" style="width:100%;padding:6px 8px;background:#0a171b;border:1px solid #26546a;border-radius:6px;color:#e9f3f7;margin-bottom:6px"></select>
+      <label style="font-size:.85rem;color:#9fbcc8">Questions per student: <input id="fSampleN" type="number" value="5" min="1" max="30" style="width:60px;padding:3px;margin-left:4px"></label>
+    </div>
+  `;
+  formRow.parentElement.insertBefore(wrap, formRow);
+
+  const cb = document.getElementById('fUseBank');
+  cb.onchange = async (e) => {
+    assignUseBank = e.target.checked;
+    document.getElementById('bankPicker').style.display = assignUseBank ? 'block' : 'none';
+    const disabledIds = ['fGame', 'fMode', 'fDiff', 'fRounds', 'fTime', 'fCap'];
+    disabledIds.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) { el.disabled = assignUseBank; el.style.opacity = assignUseBank ? '0.5' : '1'; }
+    });
+    if (assignUseBank) {
+      try {
+        const d = await api('/teacher/bank');
+        const sel = document.getElementById('fBankId');
+        const banks = d.banks || [];
+        if (!banks.length) {
+          sel.innerHTML = '<option value="">— No banks yet (upload one first) —</option>';
+          toast('Tip: go to Banks tab → + Upload CSV first');
+        } else {
+          sel.innerHTML = banks.map(b => `<option value="${b.id}">${esc(b.name)} (${b.count} q)</option>`).join('');
+        }
+      } catch (e) { toast('⚠ ' + e.message); }
+    }
+  };
+}
+setupBankToggle();
+
+async function createBankAssignment() {
+  const bankId = document.getElementById('fBankId').value;
+  const sampleN = parseInt(document.getElementById('fSampleN').value, 10) || 5;
+  if (!bankId) { toast('⚠ Select a bank'); return; }
+  try {
+    toast('Creating bank assignment…');
+    const d = await api('/teacher/assignments', {
+      method: 'POST',
+      body: JSON.stringify({
+        classId: current,
+        bankId,
+        sampleN,
+        game: 'quiz',
+        mode: 'practice',
+      }),
+    });
+    if (d.error) throw new Error(d.error);
+    assignment = d.assignment;
+    document.getElementById('roomCode').textContent = d.playCode;
+    document.getElementById('roomUrl').textContent = d.inviteUrl;
+    document.getElementById('roomBox').style.display = 'flex';
+    document.getElementById('qrBox').style.display = 'none';
+    await loadClass(current);
+    toast('✅ Play session ready — students open ' + d.inviteUrl);
+  } catch (e) { toast('⚠ ' + e.message); }
+}
+
 $('genBtn').addEventListener('click', async () => {
   if (!current) { toast(T('tn.toast_pick_class', 'Pick or create a class first')); return; }
   // M1-UI（2026-10-01）：board/memory dataReady:false 时警告教师（不假装能出报告）
@@ -701,6 +779,7 @@ $('genBtn').addEventListener('click', async () => {
       { site: ({ board: 'BoardDuel', memory: 'MemoryDuel' })[selOpt.dataset.site] || selOpt.dataset.site }));
   }
   const dueRaw = $('fDue').value;
+  if (assignUseBank) { await createBankAssignment(); return; }
   try {
     const d = await api('/teacher/assignments', {
       method: 'POST',
@@ -1077,3 +1156,78 @@ async function openImportCode() {
     await loadBanks();
   } catch (e) { toast('⚠ ' + e.message); }
 }
+
+
+/* ════════════ M4-P0 Assign 表单接 bankId（2026-10-01）════════════
+   在原有 assignment POST 流程上加"Use my bank"开关：
+   - 关：走原逻辑（hardcoded rounds）
+   - 开：调用 GET /teacher/bank 列出可用库，选中后 POST /assignments 带 bankId+sampleN
+   返回 inviteUrl 后弹窗显示 play URL + QR */
+let assignUseBank = false;
+
+function setupAssignBankUI() {
+  // Inject a toggle before the existing Game select
+  const fGame = document.getElementById('fGame');
+  if (!fGame || document.getElementById('fUseBank')) return;
+  const wrap = document.createElement('div');
+  wrap.style.cssText = 'margin-bottom:10px;padding:8px 10px;background:#1a3d4a;border-radius:8px;';
+  wrap.innerHTML = `
+    <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:.95rem">
+      <input type="checkbox" id="fUseBank" style="width:18px;height:18px;cursor:pointer">
+      <span>Use my question bank (CSV-uploaded)</span>
+    </label>
+    <div id="bankPicker" style="display:none;margin-top:8px;padding:6px 8px;background:#0a171b;border-radius:6px">
+      <select id="fBankId" style="width:100%;padding:6px;margin-bottom:6px"></select>
+      <label style="font-size:.85rem;color:#9fbcc8">Questions per student: <input id="fSampleN" type="number" value="5" min="1" max="30" style="width:60px;padding:3px"></label>
+    </div>
+  `;
+  fGame.parentElement.insertBefore(wrap, fGame.parentElement.firstChild);
+
+  document.getElementById('fUseBank').onchange = async (e) => {
+    assignUseBank = e.target.checked;
+    document.getElementById('bankPicker').style.display = assignUseBank ? 'block' : 'none';
+    document.getElementById('fGame').disabled = assignUseBank;
+    if (assignUseBank) {
+      try {
+        const d = await api('/teacher/bank');
+        const sel = document.getElementById('fBankId');
+        sel.innerHTML = (d.banks || []).map(b => `<option value="${b.id}">${esc(b.name)} (${b.count} q)</option>`).join('') || '<option>No banks yet</option>';
+      } catch (e) { toast('⚠ ' + e.message); }
+    }
+  };
+}
+setupAssignBankUI();
+
+/* 拦截原有 assign form 提交，加 bankId 处理 */
+const _origAssignSubmit = document.querySelector('form')?.onsubmit;
+// Hook the existing form: when Use Bank is on, replace body with bankId
+document.addEventListener('submit', async (e) => {
+  const form = e.target;
+  if (!form || form.id !== 'assignForm') return;
+  if (!assignUseBank) return;
+  e.preventDefault();
+  const classId = $('fClass').value;
+  const bankId = $('fBankId').value;
+  const sampleN = parseInt($('fSampleN').value) || 5;
+  if (!classId) { toast('⚠ Select a class first'); return; }
+  if (!bankId) { toast('⚠ Select a bank first'); return; }
+  try {
+    toast('Creating room from bank…');
+    const d = await api('/teacher/assignments', {
+      method: 'POST',
+      body: JSON.stringify({
+        classId, bankId, sampleN,
+        game: 'quiz',
+        mode: 'practice',
+        title: $('Demo Title', $('assignTitle')?.value || ''),
+      }),
+    });
+    if (d.error) throw new Error(d.error);
+    // Show play URL modal (reuse share modal)
+    if (typeof showShareModal === 'function') {
+      showShareModal(d.playCode, d.inviteUrl);
+    } else {
+      toast('✅ Room created: ' + d.inviteUrl);
+    }
+  } catch (err) { toast('⚠ ' + err.message); }
+}, true);
