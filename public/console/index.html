@@ -36,6 +36,7 @@
       <button class="tab" id="tabAssign" role="tab" aria-selected="false" data-i18n="tn.tab_assign">Assign</button>
       <button class="tab" id="tabBoard" role="tab" aria-selected="false" data-i18n="tn.tab_board">Board</button>
       <button class="tab" id="tabPrivacy" role="tab" aria-selected="false" data-i18n="tn.tab_privacy">Privacy</button>
+<button class="tab" id="tabBanks" role="tab" aria-selected="false" data-i18n="tn.tab_banks">Banks</button>
     </div>
 
     <!-- OVERVIEW -->
@@ -204,6 +205,21 @@
       </div>
     </div>
   </section>
+
+  <div id="viewBanks" style="display:none">
+    <div class="card">
+      <h2 style="margin:0 0 8px;font-size:1.15rem" data-i18n="tn.banks_h2">My question banks</h2>
+      <p class="mini" style="margin:0 0 16px" data-i18n="tn.banks_lead">
+        Upload a CSV of questions, then share a 6-character code with colleagues — they can fork the bank into their own library.
+      </p>
+      <div class="row" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px">
+        <button class="btn btn-primary" id="uploadCsvBtn" data-i18n="tn.banks_upload">+ Upload CSV</button>
+        <button class="btn btn-ghost" id="importCodeBtn" data-i18n="tn.banks_import">+ Import from code</button>
+      </div>
+      <div id="bankList" class="grid cards"></div>
+    </div>
+  </div>
+
 </main>
 
 <div class="smodal" id="smodal" style="display:none" role="dialog" aria-modal="true">
