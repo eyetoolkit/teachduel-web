@@ -223,13 +223,29 @@ async function boot() {
 }
 
 function fillGames() {
+  // M1-UI（2026-10-01）：三站统一教师端 — 按 site 分组（<optgroup>）渲染游戏
+  // 数据来源：/api/teacher/games（M1 改造后 11 个游戏，含 board/memory dataReady:false）
   const sel = $('fGame');
   sel.innerHTML = '';
-  for (const g of games) {
-    const o = document.createElement('option');
-    o.value = g.slug;
-    o.textContent = g.label + (g.note ? ' · ' + g.note : '');
-    sel.appendChild(o);
+  // 按 site 顺序：numeri → board → memory（主站放第一）
+  const order = ['numeri', 'board', 'memory'];
+  const bySite = new Map();
+  for (const g of games) (bySite.get(g.site) || bySite.set(g.site, []).get(g.site)).push(g);
+  for (const site of order) {
+    const list = bySite.get(site);
+    if (!list || !list.length) continue;
+    const grp = document.createElement('optgroup');
+    grp.label = ({ numeri: 'NumeriDuel · 数学', board: 'BoardDuel · 棋类', memory: 'MemoryDuel · 知识对抗' })[site] || site;
+    for (const g of list) {
+      const o = document.createElement('option');
+      o.value = g.slug;
+      // dataReady:false 加视觉提示（不假装能出报告）
+      o.textContent = g.label + (g.note ? ' · ' + g.note : '') + (g.dataReady ? '' : ' · (数据接入中)');
+      o.dataset.site = g.site;
+      o.dataset.dataReady = g.dataReady ? '1' : '0';
+      grp.appendChild(o);
+    }
+    sel.appendChild(grp);
   }
 }
 
@@ -639,6 +655,12 @@ $('rosterSave').addEventListener('click', async () => {
 /* ─── assignment generation：房间码来自服务端 ─── */
 $('genBtn').addEventListener('click', async () => {
   if (!current) { toast(T('tn.toast_pick_class', 'Pick or create a class first')); return; }
+  // M1-UI（2026-10-01）：board/memory dataReady:false 时警告教师（不假装能出报告）
+  const selOpt = $('fGame').selectedOptions[0];
+  if (selOpt && selOpt.dataset.dataReady === '0') {
+    toast(T('⚠ {site} 数据接入中，邀请链接可发，但学生成绩暂不计入看板',
+      { site: ({ board: 'BoardDuel', memory: 'MemoryDuel' })[selOpt.dataset.site] || selOpt.dataset.site }));
+  }
   const dueRaw = $('fDue').value;
   try {
     const d = await api('/teacher/assignments', {
