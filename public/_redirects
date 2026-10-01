@@ -1,0 +1,2 @@
+# /share/:code → /share/index.html (SPA handles the code via location.pathname)
+/share/* /share/index.html 200
