@@ -28,17 +28,29 @@ let games = [];
 let assignmentList = [];
 let liveTimer = null;
 
-/* ─── 浏览器本地教师身份（免登陆模式下每个浏览器一个独立课堂空间） ─── */
+/* ─── 浏览器本地教师身份（免登陆模式下每个浏览器一个独立课堂空间） ───
+   2026-10-06：服务端已取消「缺头回退到共享身份」，缺身份一律 401。
+   所以这里**必须保证永远返回一个合法 id**——返回空串等于让用户直接撞 401。
+   三级降级：localStorage → sessionStorage → 内存（仅本页有效）。
+   之所以以前能返回 '' 还"没事"，是因为服务端把所有缺头的请求都收进了
+   同一个共享桶——那不是兜底，那是所有人的数据混在一个命名空间里。 */
+let _anonMemory = null;
 function anonId() {
   try {
-    let v = localStorage.getItem('md_teacher_anon');
-    if (!v) {
-      v = (crypto && crypto.randomUUID) ? crypto.randomUUID() : ('a-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 10));
-      if (!v.startsWith('a-')) v = 'a-' + v;
-      localStorage.setItem('md_teacher_anon', v);
-    }
-    return v;
-  } catch (e) { return ''; }
+    const existing = localStorage.getItem('md_teacher_anon');
+    if (existing && existing.startsWith('a-')) return existing;
+  } catch (e) { /* localStorage 被禁（隐私模式 / 站点数据禁用），往下走 */ }
+  const fresh = 'a-' + ((crypto && crypto.randomUUID)
+    ? crypto.randomUUID()
+    : Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 10));
+  try { localStorage.setItem('md_teacher_anon', fresh); return fresh; } catch (e) { /* 继续 */ }
+  try {
+    const s = sessionStorage.getItem('md_teacher_anon');
+    if (s && s.startsWith('a-')) return s;
+    sessionStorage.setItem('md_teacher_anon', fresh);
+  } catch (e) { /* 继续 */ }
+  if (!_anonMemory) _anonMemory = fresh;   // 关掉所有存储时的最后一级：本页内稳定
+  return _anonMemory;
 }
 
 /* ─── API ─── */
