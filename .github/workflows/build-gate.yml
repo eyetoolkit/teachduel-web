@@ -1,0 +1,69 @@
+# 构建门禁（Phase 2.3，2026-10-06）
+#
+# 本仓库此前**完全没有 CI** —— tsc 与 vite build 只在我本机跑过，
+# 类型错误、构建失败可以直接推到 main 并自动上 Pages。
+# 后端 tri-sites 从建库起 CI 红了 120 次，本仓库连门禁都没有；
+# 两者一起说明「绿灯」在这里从来没有被真正验证过。
+#
+# 本 workflow 只做一件事：`pnpm build`。四个仓库的 build 脚本都是
+#   tsc --noEmit && vite build && <copy-legacy / filter-sitemap>
+# 所以这一条命令就同时覆盖了类型检查与生产构建，不需要额外的 typecheck 步骤。
+#
+# 注意：本 workflow 不部署 —— Pages 由 push main 自动部署。
+# 它的价值是**在部署之前**把类型/构建错误挡住，避免坏包上线路。
+
+name: build-gate
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/**'
+      - 'public/**'
+      - 'scripts/**'
+      - 'index.html'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - 'vite.config.ts'
+      - 'tsconfig.json'
+      - '.github/workflows/build-gate.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'src/**'
+      - 'public/**'
+      - 'scripts/**'
+      - 'index.html'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - 'vite.config.ts'
+      - 'tsconfig.json'
+      - '.github/workflows/build-gate.yml'
+
+# 同一分支的新 push 直接取消在跑的旧构建，省 CI 配额
+concurrency:
+  group: build-gate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      # 版本从 package.json 的 packageManager 字段读取（四个仓库都是 pnpm@10.11.1）
+      - uses: pnpm/action-setup@v4
+
+      # engines 声明 ">=20.0.0 <23"，故固定 22
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'pnpm'
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      # tsc --noEmit + vite build + 产物后处理，一步到位
+      - name: Type check + build
+        run: pnpm build
