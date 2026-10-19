@@ -1,7 +1,8 @@
 /**
- * tri-sites SHARED i18n runtime  (single source of truth)
- * 位置：@tri-sites/design-system/src/i18n/runtime/i18n.js
- * 由 scripts/sync-i18n.mjs 推送到各站 public/i18n/，禁止在各站手动改副本。
+ * TeachDuel 站内 i18n runtime（站点自带副本，不是共享源产物）
+ * 事实（2026-10-19 更正）：本文件是各站独立维护的运行时副本，四站内容互不相同；
+ * 真正的"单一源" @tri-sites/design-system/src/i18n/runtime/i18n.js 并不存在，
+ * 原注释所称的推送脚本 scripts/sync-i18n.mjs 也无对应文件。差异以各站本文件为准。
  * 支持：
  * - 嵌套键查找（dot notation）
  * - 占位符替换 {name}
